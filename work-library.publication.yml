@@ -1,0 +1,80 @@
+schema: work-library-publication/0
+case_id: forge-signal
+adapter: git-manifest
+canonical_output: library-role
+
+catalog:
+  title: Forge Signal
+  subtitle: Audience-shaped outputs · Workflow reference
+  question: Where should Forge Signal sit between agent-assisted research and governed publication?
+  summary: Use it to turn canonical material into reader-specific briefs, decks, documents, and media. Keep claims, lifecycle, approval, access, and source authority outside the generator.
+
+collection_candidates: [commerce, methods, content-systems]
+
+publication:
+  status: draft
+  clearance: internal
+  assurance:
+    human_validation: pending
+
+outputs:
+  - id: library-role
+    type: decision-record
+    status: draft
+    artifact: docs/work-library-record.md
+    clearance: internal
+    assurance:
+      human_validation: pending
+  - id: source-reference
+    type: reference-library
+    status: ready
+    artifact: README.md
+    clearance: internal
+    assurance:
+      human_validation: pending
+  - id: method-reference
+    type: reference-library
+    status: ready
+    artifact: docs/
+    clearance: internal
+    assurance:
+      human_validation: pending
+
+projections:
+  - id: decision
+    output: library-role
+    artifact: docs/work-library-record.md
+    render_as: executive-decision
+    label: Work Library role
+    route: /
+  - id: source-overview
+    output: source-reference
+    artifact: README.md
+    render_as: reference-document
+    label: Source overview
+    route: /reference/source
+  - id: extensibility
+    output: method-reference
+    artifact: docs/guides/extensibility.md
+    render_as: reference-document
+    label: Extensibility guide
+    route: /reference/extensibility
+  - id: executive-advisory
+    output: method-reference
+    artifact: docs/voice/executive-advisory-voice.md
+    render_as: reference-document
+    label: Executive advisory voice
+    route: /reference/executive-advisory
+  - id: skills
+    output: method-reference
+    artifact: docs/recommended-skills.md
+    render_as: reference-document
+    label: Recommended skills
+    route: /reference/skills
+
+exclude:
+  - src/**
+  - templates/**
+  - docs/internal/**
+  - "**/.git/**"
+  - "**/node_modules/**"
