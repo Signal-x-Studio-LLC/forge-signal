@@ -2,8 +2,9 @@
  * Voice & Tone Guide for Strategic Content
  *
  * This module now delegates to the voice registry for mode-specific
- * instructions. The legacy exports (VOICE_RULES, PROVISIONAL_PHRASES,
- * EVOLUTION_PATTERN) are preserved for backward compatibility.
+ * instructions. The legacy VOICE_RULES export is preserved for the v1/v2
+ * checkers; RETIRED_PROVISIONAL_TELLS carries the guide-v1.3 retired-tell
+ * list those checkers penalize.
  */
 
 import { loadConfig } from '../../core/config.js';
@@ -12,6 +13,11 @@ import type { Perspective } from '../../core/registries/types.js';
 
 export interface VoiceRules {
   openingPatterns: {
+    /** Defect-in-hand cold open: a concrete broken/missing/wrong thing, with
+     * scale, in sentence one or two. Current dominant (guide v1.3, 2026-08-03). */
+    defectFirst: boolean;
+    /** Question-first hook. Legal but dormant — zero uses in the 8 most
+     * recent posts (guide v1.3 audit). */
     questionFirst: boolean;
     uncomfortableTruth: boolean;
     avoidAcademic: string[];
@@ -40,7 +46,8 @@ export interface VoiceRules {
 /** @deprecated Use voice registry instead. Preserved for backward compatibility. */
 export const VOICE_RULES: VoiceRules = {
   openingPatterns: {
-    questionFirst: true,
+    defectFirst: true,
+    questionFirst: false,
     uncomfortableTruth: true,
     avoidAcademic: [
       "In this post, I'll explore...",
@@ -90,18 +97,23 @@ export const VOICE_RULES: VoiceRules = {
   },
 };
 
-/** @deprecated Use voice registry instead. */
-export const PROVISIONAL_PHRASES = [
+/**
+ * Retired provisional tells (guide v1.3, 2026-08-03). These phrases appeared in
+ * earlier versions of the voice guide as positive examples; they have been
+ * copied so often they now signal templated writing. Checkers PENALIZE their
+ * presence — never suggest or reward them.
+ */
+export const RETIRED_PROVISIONAL_TELLS = [
   "Here's where I've landed—for now",
+  "Here's where I've landed",
   "This is what I think today",
+  "That's what I think today",
+  "This is what I think, anyway",
   "For now, I'm trying to",
-  "Maybe this isn't about X at all. Maybe it's about Y",
+  "Ask me again in six months",
+  "Two different modes. Same instinct.",
+  "Your mileage may vary",
 ];
-
-/** @deprecated Use voice registry instead. */
-export const EVOLUTION_PATTERN = {
-  template: "I used to [OLD APPROACH]. Now [NEW APPROACH]. That sounds like progress. And it is. But it also brings up a real question: [TENSION].",
-};
 
 /**
  * Get voice instructions for a specific mode with perspective handling.

@@ -14,6 +14,6 @@ export {
 
 export {
   VOICE_RULES,
-  PROVISIONAL_PHRASES,
+  RETIRED_PROVISIONAL_TELLS,
   getVoiceInstructions,
 } from './voice-guide.js';

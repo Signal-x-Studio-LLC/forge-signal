@@ -9,7 +9,7 @@
  */
 
 import { checkVoice, type VoiceCheckResult } from './voice-checker.js';
-import { VOICE_RULES, PROVISIONAL_PHRASES } from './voice-guide.js';
+import { VOICE_RULES, RETIRED_PROVISIONAL_TELLS } from './voice-guide.js';
 import type {
   EnhancedVoiceCheckResult,
   RevisionSuggestion,
@@ -59,22 +59,19 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
   suggestions.push(...prescriptiveAnalysis.suggestions);
   problemZones.push(...prescriptiveAnalysis.problemZones);
 
-  // Analyze provisional language
-  const provisionalAnalysis = analyzeProvisionalLanguage(content);
-  if (provisionalAnalysis.issue) {
-    suggestions.push(provisionalAnalysis.issue);
-  }
-  if (provisionalAnalysis.preservationZone) {
-    preservationZones.push(provisionalAnalysis.preservationZone);
-  }
+  // Analyze retired provisional tells (guide v1.3: presence is the defect)
+  const retiredTellAnalysis = analyzeRetiredTells(content);
+  suggestions.push(...retiredTellAnalysis.suggestions);
+  problemZones.push(...retiredTellAnalysis.problemZones);
 
-  // Analyze evolution pattern
+  // Analyze templated evolution formula (guide v1.3: explicit before/after
+  // framing is a tic — evolution shows inside the argument)
   const evolutionAnalysis = analyzeEvolutionPattern(content);
   if (evolutionAnalysis.issue) {
     suggestions.push(evolutionAnalysis.issue);
   }
-  if (evolutionAnalysis.preservationZone) {
-    preservationZones.push(evolutionAnalysis.preservationZone);
+  if (evolutionAnalysis.problemZone) {
+    problemZones.push(evolutionAnalysis.problemZone);
   }
 
   // Analyze self-interrogation
@@ -115,13 +112,19 @@ function analyzeOpening(content: string): {
 } {
   const paragraphs = content.split('\n\n');
   const firstParagraph = paragraphs[0] || '';
+  // Guide v1.3: defect-in-hand cold open is the current dominant — a concrete
+  // broken/missing/wrong thing, with scale, in sentence one or two.
+  const hasDefect =
+    /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
+      firstParagraph
+    );
   const hasQuestion = /[?]/.test(firstParagraph);
   const hasTension =
     /tension|uncomfortable|dilemma|challenge|paradox|contradiction/.test(
       firstParagraph.toLowerCase()
     );
 
-  if (hasQuestion || hasTension) {
+  if (hasDefect || hasQuestion || hasTension) {
     return {
       preservationZone: {
         start: 0,
@@ -133,7 +136,7 @@ function analyzeOpening(content: string): {
 
   return {
     issue: {
-      issue: 'Opening lacks question or tension hook',
+      issue: 'Opening lacks a defect-in-hand, question, or tension hook',
       location: {
         start: 0,
         end: Math.min(firstParagraph.length, 200),
@@ -141,7 +144,7 @@ function analyzeOpening(content: string): {
       },
       currentText: firstParagraph.substring(0, 100),
       suggestedFix:
-        'Start with a provocative question, an uncomfortable truth, or a tension that draws readers in. Example: "What if everything we\'ve assumed about X is wrong?"',
+        'State the concrete thing that broke, was absent, or was wrong — in your own system, with the scale attached. Example: "I rebuilt a database table and it silently deleted two columns I needed. No error." Question openers are legal but currently dormant.',
       priority: 'high',
     },
     problemZone: {
@@ -298,59 +301,82 @@ function analyzePrescriptiveAuthority(content: string): {
   return { suggestions, problemZones };
 }
 
-function analyzeProvisionalLanguage(content: string): {
-  issue?: RevisionSuggestion;
-  preservationZone?: TextRange;
+function analyzeRetiredTells(content: string): {
+  suggestions: RevisionSuggestion[];
+  problemZones: TextRange[];
 } {
-  for (const phrase of PROVISIONAL_PHRASES) {
-    const regex = new RegExp(`\\b${escapeRegex(phrase)}\\b`, 'gi');
-    const match = regex.exec(content);
+  // Guide v1.3: these phrases were positive examples in earlier guide
+  // versions; they are now retired tells. Presence is the defect.
+  const suggestions: RevisionSuggestion[] = [];
+  const problemZones: TextRange[] = [];
 
-    if (match) {
-      // Find the surrounding sentence for preservation
+  for (const phrase of RETIRED_PROVISIONAL_TELLS) {
+    const regex = new RegExp(escapeRegex(phrase), 'gi');
+    let match;
+
+    while ((match = regex.exec(content)) !== null) {
       const sentenceStart = findSentenceStart(content, match.index);
       const sentenceEnd = findSentenceEnd(content, match.index + match[0].length);
 
-      return {
-        preservationZone: {
-          start: sentenceStart,
-          end: sentenceEnd,
-          text: content.substring(sentenceStart, sentenceEnd),
+      suggestions.push({
+        issue: `Retired provisional tell: "${match[0]}"`,
+        location: {
+          start: match.index,
+          end: match.index + match[0].length,
+          text: match[0],
         },
-      };
+        currentText: match[0],
+        suggestedFix:
+          'Cut or rewrite — this phrase now signals templated writing. Keep the provisional spirit by ending with forward motion, a concrete detail, or a question you are genuinely still holding.',
+        priority: 'high',
+      });
+
+      problemZones.push({
+        start: sentenceStart,
+        end: sentenceEnd,
+        text: content.substring(sentenceStart, sentenceEnd),
+      });
     }
   }
 
-  return {
-    issue: {
-      issue: 'Missing provisional language',
-      suggestedFix:
-        'Add phrases like "for now," "today," "as I see it," or "here\'s where I\'ve landed" to signal that conclusions are current thinking, not absolute truths',
-      priority: 'medium',
-    },
-  };
+  return { suggestions, problemZones };
 }
 
 function analyzeEvolutionPattern(content: string): {
   issue?: RevisionSuggestion;
-  preservationZone?: TextRange;
+  problemZone?: TextRange;
 } {
-  const evolutionPatterns = [
+  // Guide v1.3: the explicit "I used to think X, now Y" formula is a
+  // templated tic. The current form retracts an earlier sentence mid-argument
+  // with the evidence that forced the retraction — absence of the formula is
+  // not a defect.
+  const evolutionFormulas = [
     /I used to think[^.]+now I/gi,
     /I used to believe[^.]+but/gi,
     /My thinking (has )?evolved/gi,
     /That sounds like progress/gi,
-    /I\'ve changed my mind/gi,
   ];
 
-  for (const pattern of evolutionPatterns) {
+  for (const pattern of evolutionFormulas) {
     const match = pattern.exec(content);
     if (match) {
       const sentenceStart = findSentenceStart(content, match.index);
       const sentenceEnd = findSentenceEnd(content, match.index + match[0].length);
 
       return {
-        preservationZone: {
+        issue: {
+          issue: `Templated evolution formula: "${match[0].substring(0, 60)}"`,
+          location: {
+            start: match.index,
+            end: match.index + match[0].length,
+            text: match[0],
+          },
+          currentText: match[0],
+          suggestedFix:
+            'Show the evolution inside the argument instead — retract an earlier sentence with the evidence that forced it ("My first draft of this section said X. Then I went and read the predicate. There\'s a third condition."), or let the changed thinking show through the argument itself.',
+          priority: 'medium',
+        },
+        problemZone: {
           start: sentenceStart,
           end: sentenceEnd,
           text: content.substring(sentenceStart, sentenceEnd),
@@ -359,51 +385,42 @@ function analyzeEvolutionPattern(content: string): {
     }
   }
 
-  return {
-    issue: {
-      issue: 'Missing evolution pattern',
-      suggestedFix:
-        'Include a moment where you show how your thinking has evolved: "I used to think X, but now I see Y" or "My perspective has shifted because..."',
-      priority: 'low',
-    },
-  };
+  return {};
 }
 
 function analyzeSelfInterrogation(content: string): {
   issue?: RevisionSuggestion;
   preservationZone?: TextRange;
 } {
-  const interrogationPatterns = [
-    /But that brings up/gi,
-    /But that raises/gi,
-    /I wonder (if|whether)/gi,
-    /What if[^?]+\?/gi,
-    /The question I\'m sitting with/gi,
-    /What I\'m still wrestling with/gi,
-  ];
+  // Guide v1.3: questions live mid-post as the pivot that marks the turn in
+  // the investigation, and they interrogate procedure, not feelings. Zero
+  // question marks is the clearest tell of a composed-essay draft.
+  const firstParagraphEnd = content.indexOf('\n\n');
+  const bodyStart = firstParagraphEnd === -1 ? 0 : firstParagraphEnd;
+  const bodyQuestionIndex = content.indexOf('?', bodyStart);
 
-  for (const pattern of interrogationPatterns) {
-    const match = pattern.exec(content);
-    if (match) {
-      const sentenceStart = findSentenceStart(content, match.index);
-      const sentenceEnd = findSentenceEnd(content, match.index + match[0].length);
+  if (bodyQuestionIndex !== -1) {
+    const sentenceStart = findSentenceStart(content, bodyQuestionIndex);
+    const sentenceEnd = findSentenceEnd(content, bodyQuestionIndex);
 
-      return {
-        preservationZone: {
-          start: sentenceStart,
-          end: sentenceEnd,
-          text: content.substring(sentenceStart, sentenceEnd),
-        },
-      };
-    }
+    return {
+      preservationZone: {
+        start: sentenceStart,
+        end: sentenceEnd,
+        text: content.substring(sentenceStart, sentenceEnd),
+      },
+    };
   }
+
+  const wordCount = content.split(/\s+/).filter(Boolean).length;
+  const floor = wordCount <= 800 ? 2 : 3;
 
   return {
     issue: {
-      issue: 'Missing self-interrogation',
+      issue: 'No mid-post question pivot',
       suggestedFix:
-        'Add moments of self-questioning: "But that brings up an interesting question..." or "I wonder if..." to show active thinking',
-      priority: 'low',
+        `Add procedural self-interrogation at the turn of the argument — questions that audit your own method and report the error rate ("Hadn't I already solved this?", "I went in with four hypotheses. Three were wrong."). Floor at this length: ${floor} literal question marks.`,
+      priority: 'high',
     },
   };
 }

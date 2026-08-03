@@ -1,4 +1,4 @@
-import { VOICE_RULES, PROVISIONAL_PHRASES } from './voice-guide.js';
+import { VOICE_RULES, RETIRED_PROVISIONAL_TELLS } from './voice-guide.js';
 
 export interface VoiceCheckResult {
   score: number; // 0-10
@@ -15,16 +15,23 @@ export function checkVoice(content: string): VoiceCheckResult {
   const strengths: string[] = [];
   let score = 10;
 
-  // Check opening
+  // Check opening (guide v1.3: defect-in-hand cold open is the current
+  // dominant; question/tension openers remain legal but dormant)
   const firstParagraph = content.split('\n\n')[0] || '';
+  const hasDefect =
+    /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
+      firstParagraph
+    );
   const hasQuestion = /[?]/.test(firstParagraph);
   const hasTension = /tension|uncomfortable|dilemma|challenge/.test(firstParagraph.toLowerCase());
-  
-  if (!hasQuestion && !hasTension) {
-    issues.push('Opening lacks question or tension hook');
+
+  if (!hasDefect && !hasQuestion && !hasTension) {
+    issues.push(
+      'Opening lacks a defect-in-hand (concrete broken/missing thing with scale), question, or tension hook'
+    );
     score -= 2;
   } else {
-    strengths.push('Strong opening with question/tension');
+    strengths.push('Strong opening (defect-in-hand, question, or tension)');
   }
 
   // Check for corporate jargon
@@ -51,33 +58,39 @@ export function checkVoice(content: string): VoiceCheckResult {
     }
   }
 
-  // Check for provisional language
-  const hasProvisional = PROVISIONAL_PHRASES.some(phrase => 
-    content.toLowerCase().includes(phrase.toLowerCase())
-  );
-  if (!hasProvisional) {
-    issues.push('Missing provisional language ("for now," "today," etc.)');
+  // Check for retired provisional tells (guide v1.3: these phrases signal
+  // templated writing — presence is the defect, not absence)
+  for (const tell of RETIRED_PROVISIONAL_TELLS) {
+    if (content.toLowerCase().includes(tell.toLowerCase())) {
+      issues.push(`Contains retired provisional tell: "${tell}"`);
+      score -= 1;
+    }
+  }
+
+  // Check for templated evolution formula (guide v1.3: explicit "I used to
+  // think X, now Y" framing is a tic when templated — evolution should show
+  // inside the argument, e.g. a mid-post retraction with evidence)
+  const hasEvolutionFormula = /I used to (think|believe)[^.]+\b(now|but)\b|That sounds like progress/i.test(content);
+  if (hasEvolutionFormula) {
+    issues.push(
+      'Uses the explicit evolution formula ("I used to think X, now Y") — show changed thinking inside the argument instead'
+    );
+    score -= 0.5;
+  }
+
+  // Check question floor (guide v1.3: questions live mid-post as the pivot;
+  // zero question marks is the clearest composed-essay tell)
+  const questionCount = (content.match(/\?/g) || []).length;
+  const wordCount = content.split(/\s+/).filter(Boolean).length;
+  const questionFloor = wordCount <= 800 ? 2 : 3;
+  if (questionCount === 0) {
+    issues.push('Zero question marks — the clearest tell of a composed essay rather than thinking out loud');
     score -= 1;
-  } else {
-    strengths.push('Uses provisional language appropriately');
-  }
-
-  // Check for evolution pattern
-  const hasEvolution = /I used to|Now I|That sounds like progress/.test(content);
-  if (!hasEvolution) {
-    issues.push('Missing evolution pattern ("I used to think X, now Y")');
+  } else if (questionCount < questionFloor) {
+    issues.push(`Only ${questionCount} question mark(s) — floor is ${questionFloor} at this length`);
     score -= 0.5;
   } else {
-    strengths.push('Shows evolution/learning');
-  }
-
-  // Check for self-interrogation
-  const hasSelfInterrogation = /But that brings up|I wonder|What if/.test(content);
-  if (!hasSelfInterrogation) {
-    issues.push('Missing self-interrogation moments');
-    score -= 0.5;
-  } else {
-    strengths.push('Includes self-interrogation');
+    strengths.push('Meets the mid-post question floor');
   }
 
   // Check for bold headers

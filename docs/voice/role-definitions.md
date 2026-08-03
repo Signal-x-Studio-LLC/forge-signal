@@ -44,7 +44,7 @@ Workflows are defined in `src/presets/workflows/` and registered via `registerWo
 
 **Purpose**: Generate narrative content from raw context using blog voice principles
 
-**Voice Guide**: `docs/strategic-content-voice-guide.md`
+**Voice Guide**: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.3)
 
 **Responsibilities**:
 - Transform meeting notes, observations, raw ideas into narrative content
@@ -89,7 +89,7 @@ Workflows are defined in `src/presets/workflows/` and registered via `registerWo
 **Purpose**: Final quality assurance against voice guide
 
 **Responsibilities**:
-- Verify voice consistency against `strategic-content-voice-guide.md`
+- Verify voice consistency against `thought-leadership-voice.md` (pointer to the canonical guide)
 - Check for prohibited patterns (corporate jargon, academic distance)
 - Ensure structural patterns are applied correctly
 - Final polish and formatting

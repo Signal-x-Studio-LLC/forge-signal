@@ -10,7 +10,7 @@ This document defines the three content modes Signal Forge supports, ensuring th
 
 | Mode | Purpose | Voice | Structure | Primary Audience |
 |------|---------|-------|-----------|------------------|
-| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Narrative, provisional, question-led | Story arc, tension/resolution | Broad professional audience |
+| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Narrative, self-interrogating, defect-led (guide v1.3) | Investigation arc: defect → re-derivation → adverse evidence → compressed close | Broad professional audience |
 | **Solution Architecture** | Document technical decisions, enable implementation | Precise, confident, reference-grade | arc42/C4, ADRs, diagrams | Technical teams, architects |
 | **Executive Advisory** | Recommend strategy, align stakeholders | Consultant voice, pattern-based | SCR, Before-After-Breakthrough | Executives, decision-makers |
 | **Internal Strategy** | Drive internal decisions, align teams | Direct, factual, "we/our" | Short prose + tables + bullets | Leadership, cross-functional teams |
@@ -27,15 +27,16 @@ This document defines the three content modes Signal Forge supports, ensuring th
 - Personal brand content
 
 ### Voice Characteristics
-Reference: `docs/strategic-content-voice-guide.md`
+Reference: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.3)
 
 | Principle | Application |
 |-----------|-------------|
-| Open with tension | Lead with questions, not answers |
-| Show the work | Make thinking process visible |
-| Provisional conclusions | "Here's where I've landed—for now" |
-| Self-interrogation | Question your own assumptions publicly |
-| Intentional fragments | Use rhythm and pacing for emphasis |
+| Open with the defect in hand | The concrete broken/missing/wrong thing, with scale, in sentence one or two (questions legal but dormant) |
+| Show the work | A mechanical re-derivation beat: go read the primary source, report the counts |
+| Adverse evidence | A dedicated section that weakens your own argument |
+| Self-interrogation | Procedural questions mid-post that audit your own method (≥2 question marks per ≤800 words) |
+| Compressed-reversal close | Final sentence under 12 words, landing concrete — never stock provisional phrases |
+| Intentional fragments | Use rhythm and pacing for emphasis; vary the shape |
 
 ### Structure Patterns
 - Question-First Hook
@@ -295,10 +296,11 @@ For documents that span modes, use clear section breaks:
 ## Quality Gates by Mode
 
 ### Thought Leadership Quality Checklist
-- [ ] Opens with tension or question, not thesis
-- [ ] Shows the work, not just conclusions
-- [ ] Includes self-interrogation without self-doubt
-- [ ] Provisional conclusions ("for now", "today")
+- [ ] Opens with the defect in hand (concrete + scale), not thesis
+- [ ] Shows the work — includes a mechanical re-derivation beat with raw counts
+- [ ] Carries an adverse-evidence section
+- [ ] Procedural self-interrogation mid-post (zero question marks = composed-essay tell)
+- [ ] Closes on a compressed reversal, final sentence under 12 words, no retired provisional phrases
 - [ ] Conversational but deliberate tone
 
 ### Solution Architecture Quality Checklist

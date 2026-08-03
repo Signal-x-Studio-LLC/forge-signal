@@ -6,12 +6,11 @@
  */
 
 import type { AIProviderInterface } from '../../providers/ai-provider.js';
-import { BaseAgent, type AgentConfig, type AgentMemory } from './base-agent.js';
+import { BaseAgent, type AgentMemory } from './base-agent.js';
 import type {
   AgentInput,
   AgentOutput,
   ContentTask,
-  EnhancedVoiceCheckResult,
   RevisionFeedback,
   RevisionStrategy,
   RevisionSuggestion,
@@ -242,9 +241,11 @@ Completely rewrite this content in the declared mode's voice so it would score $
   private buildModeInstruction(task?: ContentTask): string {
     const mode = this.effectiveMode(task);
     if (mode === 'thought-leadership') {
-      return `Mode: thought leadership.
-- Open with tension, a question, or an uncomfortable truth when earned.
-- Use first-person experience, provisional language, evolution of thought, and self-interrogation.
+      return `Mode: thought leadership (guide v1.3).
+- Open with the defect in hand: the concrete broken/missing/wrong thing, with its scale, in sentence one or two. Questions are legal openers but currently dormant.
+- Use first-person experience, a mechanical re-derivation beat (go read the source, report counts), and procedural self-interrogation (questions that audit the method, not feelings).
+- Keep at least two literal question marks (three to five past 800 words) — mid-post, at the turn of the argument.
+- Close on a compressed reversal: final sentence under 12 words, landing on something concrete. Never stock provisional phrases ("here's where I've landed—for now" is a retired tell).
 - Offer guidance without pretending one experience is universal.
 - Remove corporate jargon and academic distance.`;
     }
