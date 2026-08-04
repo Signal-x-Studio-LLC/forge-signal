@@ -1,9 +1,10 @@
 import type { VoiceDefinition } from '../../core/registries/types.js';
 
 /**
- * Thought Leadership voice, derived from the Signal Dispatch voice guide v1.3
- * (2026-08-03 adversarial audit vs the 8 most recent posts + held-out
- * generation test). Canonical guide:
+ * Thought Leadership voice, derived from the Signal Dispatch voice guide v1.4.
+ * Structure and sentence targets come from the v1.3 adversarial audit vs the 8
+ * most recent posts + held-out generation test (2026-08-03); principle 9 comes
+ * from v1.4 §1b, the relocated-claim rule (same date). Canonical guide:
  * ~/Workspace/dev/apps/blog/docs/signal-dispatch-voice-guide.md
  * (pointer: docs/voice/thought-leadership-voice.md).
  */
@@ -12,7 +13,7 @@ export const thoughtLeadershipVoice: VoiceDefinition = {
   name: 'Thought Leadership Voice',
 
   instructions: `
-You are writing thought leadership content in {author}'s voice as a {persona}. Key principles (guide v1.3):
+You are writing thought leadership content in {author}'s voice as a {persona}. Key principles (guide v1.4):
 
 1. **Open with the defect in hand**, not a thesis: sentence one or two states the concrete thing that broke, was absent, or was wrong — in the author's own system, with the scale attached. The tension is the failure itself. Question-first openers are legal but dormant (zero uses in the 8 most recent posts).
 2. **Show the work with a mechanical re-derivation beat**: at least one passage stops asserting, goes to the primary source, and reports what it found as raw counts ("2,335 session files", "161 issues in thirty days"). A draft with no go-and-look passage reads as someone else.

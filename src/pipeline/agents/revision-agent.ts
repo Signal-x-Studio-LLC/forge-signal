@@ -244,7 +244,7 @@ Completely rewrite this content in the declared mode's voice so it would score $
   private buildModeInstruction(task?: ContentTask): string {
     const mode = this.effectiveMode(task);
     if (mode === 'thought-leadership') {
-      return `Mode: thought leadership (guide v1.3).
+      return `Mode: thought leadership (guide v1.4).
 - Open with the defect in hand: the concrete broken/missing/wrong thing, with its scale, in sentence one or two. Questions are legal openers but currently dormant.
 - Use first-person experience, a mechanical re-derivation beat (go read the source, report counts), and procedural self-interrogation (questions that audit the method, not feelings).
 - Every first-person claim needs a source sentence that assigns it to the author specifically. Never relocate a general observation onto him: "the check people skip" must not become "the step I kept deferring". The facts stay right and only the attribution moves, so it reads as paraphrase rather than invention. This revision pass is exactly where that enters, because by now the draft has replaced the source as the thing being edited — check the source, not the draft.
