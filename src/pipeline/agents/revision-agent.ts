@@ -244,10 +244,11 @@ Completely rewrite this content in the declared mode's voice so it would score $
   private buildModeInstruction(task?: ContentTask): string {
     const mode = this.effectiveMode(task);
     if (mode === 'thought-leadership') {
-      return `Mode: thought leadership (guide v1.4).
+      return `Mode: thought leadership (guide v1.5).
 - Open with the defect in hand: the concrete broken/missing/wrong thing, with its scale, in sentence one or two. Questions are legal openers but currently dormant.
 - Use first-person experience, a mechanical re-derivation beat (go read the source, report counts), and procedural self-interrogation (questions that audit the method, not feelings).
 - Every first-person claim needs a source sentence that assigns it to the author specifically. Never relocate a general observation onto him: "the check people skip" must not become "the step I kept deferring". The facts stay right and only the attribution moves, so it reads as paraphrase rather than invention. This revision pass is exactly where that enters, because by now the draft has replaced the source as the thing being edited — check the source, not the draft.
+- The same rule runs the other way: never widen a claim about the author's own system onto the reader or onto people in general. "A README of mine drifted" must not become "a README is the file you write once and never open again". Keep the subject the source assigned.
 - Keep at least two literal question marks (three to five past 800 words) — mid-post, at the turn of the argument.
 - Close on a compressed reversal: final sentence under 12 words, landing on something concrete. Never stock provisional phrases ("here's where I've landed—for now" is a retired tell).
 - Offer guidance without pretending one experience is universal.
