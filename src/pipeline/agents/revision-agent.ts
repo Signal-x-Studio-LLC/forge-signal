@@ -53,8 +53,11 @@ export class RevisionAgent extends BaseAgent {
   /**
    * Check if this agent can handle the task
    */
-  canHandle(task: ContentTask): boolean {
-    // Revision agent handles any content that needs voice fixes
+  canHandle(_task: ContentTask): boolean {
+    // Any task can be revised — the real precondition is feedback, which lives
+    // on the AgentInput rather than the task, and is checked in execute().
+    // Underscore marks the parameter as deliberately unused; the abstract
+    // signature in base-agent.ts requires it.
     return true;
   }
 
@@ -244,6 +247,7 @@ Completely rewrite this content in the declared mode's voice so it would score $
       return `Mode: thought leadership (guide v1.3).
 - Open with the defect in hand: the concrete broken/missing/wrong thing, with its scale, in sentence one or two. Questions are legal openers but currently dormant.
 - Use first-person experience, a mechanical re-derivation beat (go read the source, report counts), and procedural self-interrogation (questions that audit the method, not feelings).
+- Every first-person claim needs a source sentence that assigns it to the author specifically. Never relocate a general observation onto him: "the check people skip" must not become "the step I kept deferring". The facts stay right and only the attribution moves, so it reads as paraphrase rather than invention. This revision pass is exactly where that enters, because by now the draft has replaced the source as the thing being edited — check the source, not the draft.
 - Keep at least two literal question marks (three to five past 800 words) — mid-post, at the turn of the argument.
 - Close on a compressed reversal: final sentence under 12 words, landing on something concrete. Never stock provisional phrases ("here's where I've landed—for now" is a retired tell).
 - Offer guidance without pretending one experience is universal.

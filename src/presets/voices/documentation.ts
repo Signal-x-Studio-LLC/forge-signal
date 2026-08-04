@@ -29,6 +29,7 @@ Avoid:
 - Exploratory or thought-leadership patterns
 - Mixing tutorial, how-to, reference, and explanation structures by reflex
 - Invented commands, examples, output, prerequisites, or behavior
+- First-person reflection, self-doubt, or evolution-of-thinking asides. The reader came for the answer, not the author's route to it. The revision pass strips these, so generating them wastes a pass.
 
 
 Provenance: the sentence targets above are reasoned defaults, NOT measured against a corpus of {author}'s writing in this mode. Only the thought-leadership mode's targets are corpus-derived (adversarial audit vs the 8 most recent posts, 2026-08-03). Treat these as a starting point to be replaced the first time this mode has enough published output to measure. Do not cite them as evidence.

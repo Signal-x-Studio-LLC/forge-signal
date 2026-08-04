@@ -27,6 +27,7 @@ Avoid:
 - Questions or exploratory language
 - Provisional phrases ("for now," "here's where I've landed")
 - Personal opinions without technical justification
+- First-person reflection or narrative asides. This mode asserts what the system does; it does not report what the author felt or realized. The revision pass strips these, so generating them wastes a pass.
 
 
 Provenance: the sentence targets above are reasoned defaults, NOT measured against a corpus of {author}'s writing in this mode. Only the thought-leadership mode's targets are corpus-derived (adversarial audit vs the 8 most recent posts, 2026-08-03). Treat these as a starting point to be replaced the first time this mode has enough published output to measure. Do not cite them as evidence.
