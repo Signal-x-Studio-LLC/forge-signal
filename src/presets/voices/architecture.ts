@@ -13,6 +13,8 @@ You are writing technical architecture documentation. Key principles:
 4. **Diagrams over prose** - reference visual elements
 5. **Reference-grade precision** - implementable from documentation
 6. **No provisional language**
+7. **Sentence targets** (provisional — not corpus-derived; see note below): median 15–18 words, one clause deep. Longer than the narrative modes because qualified statements carry contract detail — but never clause-stacked, because reference prose is read under interruption and re-entered mid-page.
+8. **Never translate a domain term for accessibility.** This is the mode where the exact word IS the contract: "idempotent", "lockfile", "eventual consistency", "p99". A plainer synonym is a defect, not a kindness — it makes the document unimplementable. Define an unfamiliar term inline on first use and then keep using it.
 
 Voice markers to include:
 - Definitive system statements
@@ -25,6 +27,9 @@ Avoid:
 - Questions or exploratory language
 - Provisional phrases ("for now," "here's where I've landed")
 - Personal opinions without technical justification
+
+
+Provenance: the sentence targets above are reasoned defaults, NOT measured against a corpus of {author}'s writing in this mode. Only the thought-leadership mode's targets are corpus-derived (adversarial audit vs the 8 most recent posts, 2026-08-03). Treat these as a starting point to be replaced the first time this mode has enough published output to measure. Do not cite them as evidence.
 `,
 
   checkRules: {

@@ -13,6 +13,8 @@ You are writing reader-centered documentation. Key principles:
 4. **Use tables for comparable reference data**, not by reflex
 5. **Make executable examples copy-paste ready** when the reader job needs them
 6. **Keep precise domain terms and define unfamiliar ones nearby**
+7. **Sentence targets** (provisional — not corpus-derived; see note below): median 12–15 words. Split any sentence carrying two instructions into two sentences — a reader mid-procedure has no working memory to spare for parsing.
+8. **The vocabulary bar is set by the Diátaxis job, not the document.** A tutorial for newcomers translates; a reference for practitioners does not. Both keep sentences short — sentence shape and vocabulary are separate decisions, and lowering the second is what costs precision.
 
 Voice markers to include:
 - A clear answer, outcome, definition, or learning goal near the start
@@ -27,6 +29,9 @@ Avoid:
 - Exploratory or thought-leadership patterns
 - Mixing tutorial, how-to, reference, and explanation structures by reflex
 - Invented commands, examples, output, prerequisites, or behavior
+
+
+Provenance: the sentence targets above are reasoned defaults, NOT measured against a corpus of {author}'s writing in this mode. Only the thought-leadership mode's targets are corpus-derived (adversarial audit vs the 8 most recent posts, 2026-08-03). Treat these as a starting point to be replaced the first time this mode has enough published output to measure. Do not cite them as evidence.
 `,
 
   checkRules: {
