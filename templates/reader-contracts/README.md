@@ -66,9 +66,13 @@ produces a document that reads more trustworthy the less grounded it is.
 **Arrays on a surface replace the defaults; they do not merge.** The loader
 merges shallowly (`{...defaults, ...surface}`), so a surface that sets its own
 `precisionLocks` loses the defaults' entirely. Omit the key to inherit; state the
-complete list when you set it. `keepTerms` and `avoidTerms` are the exception —
-those *are* merged, because `allowTerms` and `denyTerms` fold into them. The
-inconsistency is real; author around it.
+complete list when you set it. This holds for `keepTerms` and `avoidTerms` too —
+a surface that sets either one directly still clobbers the defaults'.
+
+The two surface-only keys are what behave differently: `allowTerms` is appended
+to whatever `keepTerms` survived the merge, and `denyTerms` is folded into
+whatever `avoidTerms` survived. So `allowTerms`/`denyTerms` add, while every
+inherited array replaces. Use the surface-only keys and let the defaults stand.
 
 **A `denyTerm` without a `replacement` silently becomes the string
 "reader-facing language".** That is not useful guidance to a generator. Every
