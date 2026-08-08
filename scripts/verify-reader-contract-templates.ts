@@ -99,6 +99,22 @@ for (const file of files) {
   } catch {
     // Expected: an unknown surface must fail loudly rather than fall back to defaults.
   }
+
+  // Omitting --surface on a multi-surface contract returns `defaults` verbatim,
+  // straight into the generation prompt. That block is the one part of a template
+  // the surface loop above never sees, so an unfilled placeholder there would ship
+  // silently — along with an empty avoidTerms, dropping the whole deny list.
+  const fallback = await loadProjectReaderContract({ file, cwd: ROOT });
+  if (!fallback) {
+    fail(file, 'defaults', 'the no-surface path returned no contract');
+  } else {
+    for (const [key, value] of [['reader', fallback.reader], ['job', fallback.job]] as const) {
+      if (!value) fail(file, 'defaults', `${key} is empty on the no-surface path`);
+      else if (/<[^>]+>/.test(value)) fail(file, 'defaults', `${key} still holds the placeholder ${value}`);
+    }
+    if (!fallback.plainness) fail(file, 'defaults', 'plainness is empty on the no-surface path');
+    if (!fallback.precisionLocks?.length) fail(file, 'defaults', 'precisionLocks is empty on the no-surface path');
+  }
 }
 
 if (failures.length > 0) {

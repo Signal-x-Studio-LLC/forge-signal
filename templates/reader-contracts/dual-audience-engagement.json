@@ -2,8 +2,8 @@
   "version": 1,
   "project": "<ENGAGEMENT NAME>",
   "defaults": {
-    "reader": "<WHO READS THIS IF NO SURFACE IS NAMED>",
-    "job": "<WHAT THEY MUST UNDERSTAND, DECIDE, OR DO>",
+    "reader": "Someone involved in this engagement who was not in the planning conversation",
+    "job": "Understand the plan well enough to act on their part of it",
     "assumedKnowledge": [],
     "plainness": "lay",
     "precisionLocks": [
