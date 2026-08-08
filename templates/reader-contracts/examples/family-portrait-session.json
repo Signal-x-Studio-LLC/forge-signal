@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "project": "family-portrait-session",
+  "defaults": {
+    "reader": "Someone involved in a morning portrait session at a public forest preserve",
+    "job": "Understand the plan for the morning well enough to act on it",
+    "assumedKnowledge": [],
+    "plainness": "lay",
+    "precisionLocks": [
+      "dates, times, and sequence",
+      "locations and how to reach them",
+      "rules the reader is bound by",
+      "citations and numbers"
+    ]
+  },
+  "surfaces": [
+    {
+      "name": "client-brief",
+      "reader": "A parent of three young children, reading this on a phone the night before while getting kids to bed",
+      "job": "Know where to meet, when, what to wear and bring, and roughly what the morning will feel like — without needing to ask a follow-up question at 6am",
+      "assumedKnowledge": [],
+      "plainness": "lay",
+      "precisionLocks": [
+        "the meeting time and the arrival buffer before it",
+        "each location name and how to find it from the parking area",
+        "what to wear on their feet and what to bring for the children",
+        "the leash rule, if a dog is coming",
+        "that the mansion interior is not part of the session",
+        "the phone number to reach on the morning itself"
+      ],
+      "allowTerms": [
+        "Danada Equestrian Center",
+        "Danada Forest Preserve",
+        "Danada House"
+      ],
+      "denyTerms": [
+        {
+          "term": "golden hour",
+          "reason": "Trade shorthand a parent has no reason to know",
+          "replacement": "the first hour of soft morning light"
+        },
+        {
+          "term": "subject",
+          "reason": "Turns their child into an object of the process",
+          "replacement": "the person's name, or you"
+        },
+        {
+          "term": "compression",
+          "reason": "Describes the lens, not anything the family experiences or decides",
+          "replacement": "cut it — say where you will be standing if it matters"
+        },
+        {
+          "term": "breakdown groupings",
+          "reason": "Names an internal workflow stage rather than what happens",
+          "replacement": "smaller groups — just the girls, just the two of you"
+        },
+        {
+          "term": "posing blueprint",
+          "reason": "Sounds like a procedure being run on them",
+          "replacement": "what we will try"
+        },
+        {
+          "term": "pro-bono",
+          "reason": "Operator-side permit classification with no bearing on the family's morning",
+          "replacement": "cut it entirely"
+        }
+      ]
+    },
+    {
+      "name": "operator-playbook",
+      "reader": "The photographer on site between 7:00 and 9:15am, glancing at a phone between frames while three children lose patience",
+      "job": "Move through the three locations on schedule with the right lens and settings, and tell at a glance which access and permit claims were checked at a source and which are still assumptions",
+      "assumedKnowledge": [
+        "Focal lengths, apertures, shutter speeds, and their tradeoffs",
+        "Sony a7 V menu structure and autofocus terminology"
+      ],
+      "plainness": "practitioner",
+      "precisionLocks": [
+        "the three time blocks and the order of locations",
+        "permit fees, insurance minimums, and application lead times — each with its source and the date it was checked",
+        "preserve access hours and site conduct rules — each with its source and the date it was checked",
+        "whether this session's classification actually exempts it from the permit, and on what published basis",
+        "Sony a7 V menu paths worded exactly as the camera labels them",
+        "aperture, shutter, and ISO floors, with the reason each floor exists",
+        "citations and numbers"
+      ],
+      "allowTerms": [
+        "AF-C",
+        "Face/Eye Prior. in AF",
+        "Face Memory",
+        "Forest Preserve District of DuPage County"
+      ],
+      "denyTerms": [
+        {
+          "term": "verified",
+          "reason": "The permit and access claims in the source brief were never pulled at a source; writing verified makes an assumption actionable",
+          "replacement": "checked <source>, <date> — or say unverified"
+        },
+        {
+          "term": "confirmed",
+          "reason": "Same failure as verified, one synonym further from the source",
+          "replacement": "checked <source>, <date> — or say unverified"
+        },
+        {
+          "term": "should be fine",
+          "reason": "The permit question is exactly where this phrasing costs a shoot",
+          "replacement": "the published rule and where it is published, or an explicit unverified"
+        },
+        {
+          "term": "standard practice",
+          "reason": "Appeals to a consensus no preserve district publishes",
+          "replacement": "the district's own rule, with source and check date"
+        },
+        {
+          "term": "typically",
+          "reason": "Generalizes past this district and this camera body",
+          "replacement": "what this preserve or this body specifies"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "project": "<ENGAGEMENT NAME>",
+  "defaults": {
+    "reader": "<WHO READS THIS IF NO SURFACE IS NAMED>",
+    "job": "<WHAT THEY MUST UNDERSTAND, DECIDE, OR DO>",
+    "assumedKnowledge": [],
+    "plainness": "lay",
+    "precisionLocks": [
+      "dates, times, and sequence",
+      "locations and how to reach them",
+      "costs and who pays them",
+      "rules the reader is bound by",
+      "citations and numbers"
+    ]
+  },
+  "surfaces": [
+    {
+      "name": "client-brief",
+      "reader": "The client, reading once on a phone the night before, with no preparation and no vocabulary from this trade",
+      "job": "Know where to be, when to be there, what to bring, and what will happen — well enough to show up prepared without asking a follow-up question",
+      "assumedKnowledge": [],
+      "plainness": "lay",
+      "precisionLocks": [
+        "dates, times, and sequence",
+        "meeting locations and how to reach them",
+        "anything the reader must bring, wear, or do beforehand",
+        "rules the reader is personally bound by, including access hours and site restrictions",
+        "who to contact and how, if plans change",
+        "costs and who pays them"
+      ],
+      "denyTerms": [
+        {
+          "term": "golden hour",
+          "reason": "Trade shorthand the client has no reason to know",
+          "replacement": "the first hour of soft morning light"
+        },
+        {
+          "term": "subject",
+          "reason": "Turns the person reading into an object of the process",
+          "replacement": "you, or the person's name"
+        },
+        {
+          "term": "deliverable",
+          "reason": "Procurement vocabulary in a document meant to feel like an invitation",
+          "replacement": "what you get, named concretely"
+        },
+        {
+          "term": "per the guidelines",
+          "reason": "Hides the rule the reader is actually bound by",
+          "replacement": "the rule itself, stated plainly"
+        }
+      ]
+    },
+    {
+      "name": "operator-playbook",
+      "reader": "The operator on site, mid-engagement, glancing at this between tasks with no time to reconstruct reasoning",
+      "job": "Execute the plan in order, and tell at a glance which regulatory and equipment claims were checked against a source and which are still assumptions",
+      "assumedKnowledge": [
+        "The full working vocabulary of this trade",
+        "The equipment named in the plan and its ordinary operation"
+      ],
+      "plainness": "practitioner",
+      "precisionLocks": [
+        "dates, times, and sequence",
+        "locations, access points, and how to move between them",
+        "fees, permit thresholds, insurance minimums, and application lead times — each with its source and the date it was checked",
+        "access hours and site rules — each with its source and the date it was checked",
+        "device settings and menu paths, worded exactly as the device labels them",
+        "the verification status of every regulatory claim",
+        "citations and numbers"
+      ],
+      "denyTerms": [
+        {
+          "term": "verified",
+          "reason": "Reads as checked when nothing was pulled; the operator acts on it and carries the risk",
+          "replacement": "checked <source>, <date> — or say unverified"
+        },
+        {
+          "term": "confirmed",
+          "reason": "Same failure as verified, one synonym further from the source",
+          "replacement": "checked <source>, <date> — or say unverified"
+        },
+        {
+          "term": "should be fine",
+          "reason": "An assumption wearing the clothes of a finding",
+          "replacement": "the rule and where it is published, or an explicit unverified"
+        },
+        {
+          "term": "standard practice",
+          "reason": "Appeals to a consensus with no source behind it",
+          "replacement": "the specific rule, source, and check date"
+        },
+        {
+          "term": "typically",
+          "reason": "Generalizes past the one site or device the plan actually covers",
+          "replacement": "what this site or device specifies"
+        }
+      ]
+    }
+  ]
+}
