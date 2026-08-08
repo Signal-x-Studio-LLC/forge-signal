@@ -57,9 +57,9 @@ accurate pricing."
 
 ## Tone Markers
 
-Use these phrases to establish consultant voice:
+Use these moves to establish consultant voice:
 
-- "Here's where I've landed—for now" (provisional, not prescriptive)
+- State the recommendation and name the evidence or decision boundary
 - "I recommend..." (consultant guidance)
 - "I've seen this tension across..." (pattern recognition)
 - "For your organization..." (acknowledging client context)

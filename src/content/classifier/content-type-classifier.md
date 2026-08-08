@@ -146,7 +146,7 @@ You are a content type classifier for Signal Forge. Analyze the following input 
 
 ## Content Modes
 
-1. **Thought Leadership**: Exploratory, narrative content with provisional conclusions. Blog posts, opinion pieces, reflections. Voice is questioning, shows the work, uses "I think" language.
+1. **Thought Leadership**: Public argument or explanation grounded in evidence and experience. Blog posts, opinion pieces, reflections. Voice is composed, concrete, and provisional only where the evidence remains open.
 
 2. **Solution Architecture**: Technical documentation with precise specifications. Architecture docs, ADRs, technical specs. Voice is definitive, diagram-heavy, implementation-focused.
 

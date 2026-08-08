@@ -1,9 +1,8 @@
 import type { VoiceDefinition } from '../../core/registries/types.js';
 
 /**
- * Thought Leadership voice, derived from the Signal Dispatch voice guide v1.3
- * (2026-08-03 adversarial audit vs the 8 most recent posts + held-out
- * generation test). Canonical guide:
+ * Thought Leadership voice, derived from the Signal Dispatch voice guide v1.7.
+ * Corpus patterns are diagnostics, not drafting gates. The canonical guide:
  * ~/Workspace/dev/apps/blog/docs/signal-dispatch-voice-guide.md
  * (pointer: docs/voice/thought-leadership-voice.md).
  */
@@ -12,18 +11,18 @@ export const thoughtLeadershipVoice: VoiceDefinition = {
   name: 'Thought Leadership Voice',
 
   instructions: `
-You are writing thought leadership content in {author}'s voice as a {persona}. Key principles (guide v1.3):
+You are writing thought leadership content in {author}'s voice as a {persona}. Key principles (guide v1.7):
 
-1. **Open with the defect in hand**, not a thesis: sentence one or two states the concrete thing that broke, was absent, or was wrong — in the author's own system, with the scale attached. The tension is the failure itself. Question-first openers are legal but dormant (zero uses in the 8 most recent posts).
-2. **Show the work with a mechanical re-derivation beat**: at least one passage stops asserting, goes to the primary source, and reports what it found as raw counts ("2,335 session files", "161 issues in thirty days"). A draft with no go-and-look passage reads as someone else.
-3. **Weaken your own argument on purpose**: give a dedicated section to adverse evidence — scope what doesn't transfer, name where the comparison ran the other way, or decline to act on the finding.
-4. **Self-interrogate procedure, not feelings**: questions audit the author's method and report the error rate ("I went in with four hypotheses. Three were wrong."). Interior-emotional questioning only when the piece is explicitly personal.
-5. **Questions live mid-post as the pivot** — at least two literal question marks in a post of 800 words or fewer, three to five in longer posts. Zero questions is the clearest tell of a composed essay rather than thinking out loud.
-6. **End on a compressed reversal**: turn the post's thesis back on the author or the post itself. Final sentence under 12 words, landing on something concrete — an object, a place, a count. A closing sentence over 20 words is a failed close.
+1. **Apply the writing stack in order**: evidence and claim status; reader and artifact job; controlling argument; cognitive load; Signal Dispatch voice; surface mechanics. Voice never rescues an unsupported claim or an unclear argument.
+2. **Give the reader a reason to care, then state the controlling point within 150 words.** A defect-in-hand, tension, question, or direct answer can open the piece. The hook may not withhold the point.
+3. **Show the evidence the claim requires.** If a claim depends on a repository, study, log, or primary artifact, re-derive it and show enough evidence for the reader to assess it. Do not manufacture a search scene or raw count when the claim does not require one.
+4. **Keep evidence states distinct.** Separate observed evidence, a person's reported experience, and an open hypothesis. A repository can show that activity occurred or broadened in one case; it cannot by itself prove cause, quality, value, or a population-level prediction.
+5. **Use adverse evidence and self-interrogation only when they change the claim's scope or confidence.** Questions are optional. Session steering, revision churn, or a model's objection is not POV movement unless new evidence changed the conclusion.
+6. **Complete the answer before the close.** A compressed reversal, concrete image, or open question is legal only after the reader already knows what the piece established. Keep only the genuinely unresolved boundary open.
 7. **Headers are declarative claims** someone could disagree with; the closing section header names a concrete missing thing ("What I Still Don't Have"). Never headers that narrate the essay's own movement ("Where This Leaves Me").
 8. **Use intentional fragments, varied in shape** — a repeated fragment structure is a tic, not a tool.
-9. **Ground in actual experience**: never invent people, conversations, or events. No corporate jargon, no academic distance, no prescriptive authority.
-10. **Sentence targets**: median 8–11 words; at least a third of sentences six words or shorter; no more than one in eight at twenty words or longer.
+9. **Ground every first-person claim in a source sentence that assigns it to {author}**: never invent people, conversations, or events — and never relocate a true general observation onto the author. Source "the check people skip" stays "the check people skip"; it does not become "the step I kept deferring". The facts stay right and only the attribution goes wrong, which is why relocation reads as paraphrase while drafting and survives any check aimed at made-up people. For every "I"/"my"/"me" sentence, find the source sentence attributing it to {author} specifically — not one that supports the idea, one that assigns it to him. If the source states it generally, state it generally. This runs BOTH ways: do not widen a claim either. If the source says a README of his drifted, the draft does not say \"a README is the file you write once and never open again\" — a reader who maintains theirs replies denying the premise, and the thread is about the premise instead of the argument. Keep the subject the source assigned: not narrower, not wider. Re-run this on every revision pass: relocation enters during editing, once the draft has replaced the source as the thing being edited. No corporate jargon, no academic distance, no prescriptive authority.
+10. **Use corpus measurements diagnostically**: the recent composed register has a median sentence of 8–11 words, many short sentences, and concise closes. Do not split meaning, add fragments, insert questions, or manufacture process beats to hit those measurements.
 
 Spirit over literals: these patterns describe what the voice does, not phrases to copy. Never use the retired tells: "ask me again in six months", "here's where I've landed—for now", "that's what I think today", "Two different modes. Same instinct.", "your mileage may vary".
 
@@ -36,12 +35,7 @@ Avoid:
 
   checkRules: {
     openingPatterns: {
-      required: [
-        /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i,
-        /\b\d[\d,]*\b/,
-        /[?]/,
-        /tension|uncomfortable|dilemma|challenge|paradox/i,
-      ],
+      required: [/\S/],
       forbidden: [
         /^In this (post|article)/im,
         /^This guide shows/im,
@@ -53,8 +47,7 @@ Avoid:
       positive: [
         /\b\d[\d,]*\b/,
         /\bwent (back )?and (read|counted|checked|looked)\b/i,
-        /\b(I was wrong|first draft of this|I said earlier|(three|two|four) were wrong)\b/i,
-        /\?/,
+        /\b(observed|measured|reported|hypothesis|does not (show|prove|establish))\b/i,
       ],
       negative: [
         /you should always/i,
@@ -82,41 +75,26 @@ Avoid:
     const strengths: string[] = [];
     let scoreAdjustment = 0;
 
-    const words = content.split(/\s+/).filter(Boolean).length;
-
-    // Question floor (guide v1.3): ≥2 for ≤800 words, ≥3 above
+    // Question count is a diagnostic only (guide v1.7). It never changes score.
     const questions = (content.match(/\?/g) || []).length;
-    const floor = words <= 800 ? 2 : 3;
-    if (questions === 0) {
-      issues.push('Zero question marks — the clearest composed-essay tell (floor: ≥2)');
-      scoreAdjustment -= 1.5;
-    } else if (questions < floor) {
-      issues.push(`Only ${questions} question mark(s) — floor is ${floor} at this length`);
-      scoreAdjustment -= 0.5;
-    } else {
-      strengths.push('Meets the mid-post question floor');
+    if (questions > 0) {
+      strengths.push(`Uses ${questions} question mark(s); confirm each expresses a genuine turn`);
     }
 
-    // Compressed close (guide v1.3): final sentence <12 words landing
-    // concrete; over 20 words is a failed close
+    // Close length is a diagnostic only (guide v1.7).
     const prose = content.trim().replace(/[*_#>`[\]]/g, '');
     const sentences = prose.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 0);
     const last = sentences[sentences.length - 1] || '';
     const lastWords = last.split(/\s+/).filter(Boolean).length;
     if (lastWords > 20) {
-      issues.push(`Closing sentence runs ${lastWords} words — over 20 is a failed close`);
-      scoreAdjustment -= 1;
+      issues.push(`Closing sentence runs ${lastWords} words — review for diffusion, but preserve necessary meaning`);
     } else if (lastWords > 0 && lastWords < 12) {
-      strengths.push('Closing sentence under 12 words');
-      scoreAdjustment += 0.5;
+      strengths.push('Closing sentence is concise');
     }
 
     // Mechanical re-derivation beat: raw counts reported somewhere
     if (/\b\d[\d,]*\b/.test(content)) {
-      strengths.push('Reports concrete counts (mechanical re-derivation beat)');
-    } else {
-      issues.push('No concrete counts — recent posts re-derive claims from a primary source');
-      scoreAdjustment -= 0.5;
+      strengths.push('Reports concrete counts; verify they support the claim rather than substitute for an outcome');
     }
 
     // Adverse-evidence or concrete-absence section
@@ -125,8 +103,7 @@ Avoid:
         content
       )
     ) {
-      strengths.push('Carries an adverse-evidence or concrete-absence section');
-      scoreAdjustment += 0.5;
+      strengths.push('Carries an adverse-evidence or concrete-absence section; verify it changes scope or confidence');
     }
 
     return { issues, strengths, scoreAdjustment };

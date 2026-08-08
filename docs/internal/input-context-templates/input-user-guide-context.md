@@ -27,16 +27,18 @@ Signal Forge is a CLI-based content generation system that transforms raw inputs
 
 ### Mode 1: Thought Leadership
 **Purpose**: Blog posts, articles, POVs exploring ideas
-**Voice**: Narrative, provisional, question-led, show-the-work
+**Voice**: Composed, evidence-aware, reader-first, provisional where warranted
 **Output types**: `pov`, `paper`, `post`
 
 **Voice principles**:
-- Open with tension or questions, never thesis statements
-- Show the evolution of thinking, not just conclusions
-- Include self-interrogation without self-doubt
-- End provisionally ("Here's what I think today")
+- Give the reader a concrete reason to care and state the controlling point within 150 words
+- Separate observed evidence, reported experience, and hypothesis
+- Show primary evidence when the claim depends on it
+- Preserve scope in both directions
+- Use self-interrogation only for a genuine evidentiary turn
+- Complete the answer before leaving uncertainty open
 - Use intentional fragments for rhythm
-- Ground in actual experience, not theory
+- Ground claims in actual evidence or label them as hypotheses
 
 **Example use cases**:
 - Writing a blog post about emerging technology trends

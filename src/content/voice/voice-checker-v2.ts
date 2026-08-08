@@ -74,14 +74,9 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
     problemZones.push(evolutionAnalysis.problemZone);
   }
 
-  // Analyze self-interrogation
+  // Observe genuine questions without requiring self-interrogation.
   const interrogationAnalysis = analyzeSelfInterrogation(content);
-  if (interrogationAnalysis.issue) {
-    suggestions.push(interrogationAnalysis.issue);
-  }
-  if (interrogationAnalysis.preservationZone) {
-    preservationZones.push(interrogationAnalysis.preservationZone);
-  }
+  if (interrogationAnalysis.preservationZone) preservationZones.push(interrogationAnalysis.preservationZone);
 
   // Calculate confidence based on issue clarity
   const confidence = calculateConfidence(suggestions, baseResult);
@@ -112,8 +107,7 @@ function analyzeOpening(content: string): {
 } {
   const paragraphs = content.split('\n\n');
   const firstParagraph = paragraphs[0] || '';
-  // Guide v1.3: defect-in-hand cold open is the current dominant — a concrete
-  // broken/missing/wrong thing, with scale, in sentence one or two.
+  // Guide v1.7: hook shapes are diagnostics, not gates.
   const hasDefect =
     /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
       firstParagraph
@@ -124,7 +118,7 @@ function analyzeOpening(content: string): {
       firstParagraph.toLowerCase()
     );
 
-  if (hasDefect || hasQuestion || hasTension) {
+  if (hasDefect || hasQuestion || hasTension || firstParagraph.trim().length > 0) {
     return {
       preservationZone: {
         start: 0,
@@ -136,15 +130,14 @@ function analyzeOpening(content: string): {
 
   return {
     issue: {
-      issue: 'Opening lacks a defect-in-hand, question, or tension hook',
+      issue: 'Opening is empty',
       location: {
         start: 0,
         end: Math.min(firstParagraph.length, 200),
         text: firstParagraph.substring(0, 200),
       },
       currentText: firstParagraph.substring(0, 100),
-      suggestedFix:
-        'State the concrete thing that broke, was absent, or was wrong — in your own system, with the scale attached. Example: "I rebuilt a database table and it silently deleted two columns I needed. No error." Question openers are legal but currently dormant.',
+      suggestedFix: 'Give the reader a concrete reason to care, then state the controlling point within 150 words.',
       priority: 'high',
     },
     problemZone: {
@@ -327,7 +320,7 @@ function analyzeRetiredTells(content: string): {
         },
         currentText: match[0],
         suggestedFix:
-          'Cut or rewrite — this phrase now signals templated writing. Keep the provisional spirit by ending with forward motion, a concrete detail, or a question you are genuinely still holding.',
+          'Cut or rewrite — this phrase now signals templated writing. State the supported conclusion plainly and leave only the genuinely unresolved boundary open.',
         priority: 'high',
       });
 
@@ -392,9 +385,7 @@ function analyzeSelfInterrogation(content: string): {
   issue?: RevisionSuggestion;
   preservationZone?: TextRange;
 } {
-  // Guide v1.3: questions live mid-post as the pivot that marks the turn in
-  // the investigation, and they interrogate procedure, not feelings. Zero
-  // question marks is the clearest tell of a composed-essay draft.
+  // Guide v1.7: genuine questions may mark a turn, but no question is required.
   const firstParagraphEnd = content.indexOf('\n\n');
   const bodyStart = firstParagraphEnd === -1 ? 0 : firstParagraphEnd;
   const bodyQuestionIndex = content.indexOf('?', bodyStart);
@@ -412,17 +403,7 @@ function analyzeSelfInterrogation(content: string): {
     };
   }
 
-  const wordCount = content.split(/\s+/).filter(Boolean).length;
-  const floor = wordCount <= 800 ? 2 : 3;
-
-  return {
-    issue: {
-      issue: 'No mid-post question pivot',
-      suggestedFix:
-        `Add procedural self-interrogation at the turn of the argument — questions that audit your own method and report the error rate ("Hadn't I already solved this?", "I went in with four hypotheses. Three were wrong."). Floor at this length: ${floor} literal question marks.`,
-      priority: 'high',
-    },
-  };
+  return {};
 }
 
 // =============================================================================

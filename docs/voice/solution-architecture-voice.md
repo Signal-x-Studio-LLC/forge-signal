@@ -23,7 +23,7 @@ This guide defines voice, structure, and quality standards for **Solution Archit
 
 ### 2. Be Definitive
 
-**Thought Leadership**: Provisional ("Here's where I've landed—for now")
+**Thought Leadership**: States the supported conclusion and scopes what remains unproven
 **Architecture**: Authoritative ("The system uses...")
 
 ```markdown
