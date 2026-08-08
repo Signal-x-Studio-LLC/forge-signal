@@ -13,7 +13,7 @@ forge-signal generates content in one of four **modes**. Selecting the correct m
 
 | Term | Definition | Authoritative source |
 |---|---|---|
-| **Thought Leadership** | Mode for blog posts, POVs, reflections. Provisional, question-led, self-interrogating. | [`docs/voice/thought-leadership-voice.md`](./docs/voice/thought-leadership-voice.md) |
+| **Thought Leadership** | Mode for blog posts, POVs, reflections. Evidence-aware, reader-first, provisional where warranted. | [`docs/voice/thought-leadership-voice.md`](./docs/voice/thought-leadership-voice.md) |
 | **Solution Architecture** | Mode for ADRs, specs, technical decks. Definitive, conclusion-first, diagram-heavy. | [`docs/voice/solution-architecture-voice.md`](./docs/voice/solution-architecture-voice.md) |
 | **Executive Advisory** | Mode for strategy decks, briefs, roadmaps. Confident consultant voice, outcome-focused. | [`docs/voice/executive-advisory-voice.md`](./docs/voice/executive-advisory-voice.md) |
 | **Documentation** | Mode for guides, tutorials, references. Imperative, step-by-step, copy-paste ready. | [`docs/voice/documentation-voice.md`](./docs/voice/documentation-voice.md) |

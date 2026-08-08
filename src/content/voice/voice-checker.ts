@@ -15,8 +15,8 @@ export function checkVoice(content: string): VoiceCheckResult {
   const strengths: string[] = [];
   let score = 10;
 
-  // Check opening (guide v1.3: defect-in-hand cold open is the current
-  // dominant; question/tension openers remain legal but dormant)
+  // Observe opening shape (guide v1.7: corpus patterns are diagnostics, not
+  // gates; the controlling point and evidence matter more than hook shape).
   const firstParagraph = content.split('\n\n')[0] || '';
   const hasDefect =
     /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
@@ -25,13 +25,8 @@ export function checkVoice(content: string): VoiceCheckResult {
   const hasQuestion = /[?]/.test(firstParagraph);
   const hasTension = /tension|uncomfortable|dilemma|challenge/.test(firstParagraph.toLowerCase());
 
-  if (!hasDefect && !hasQuestion && !hasTension) {
-    issues.push(
-      'Opening lacks a defect-in-hand (concrete broken/missing thing with scale), question, or tension hook'
-    );
-    score -= 2;
-  } else {
-    strengths.push('Strong opening (defect-in-hand, question, or tension)');
+  if (hasDefect || hasQuestion || hasTension) {
+    strengths.push('Uses a recognizable opening hook; confirm the controlling point follows within 150 words');
   }
 
   // Check for corporate jargon
@@ -78,19 +73,11 @@ export function checkVoice(content: string): VoiceCheckResult {
     score -= 0.5;
   }
 
-  // Check question floor (guide v1.3: questions live mid-post as the pivot;
-  // zero question marks is the clearest composed-essay tell)
+  // Question count is a diagnostic only (guide v1.7). Questions do not make a
+  // draft thoughtful, and their absence is not a defect.
   const questionCount = (content.match(/\?/g) || []).length;
-  const wordCount = content.split(/\s+/).filter(Boolean).length;
-  const questionFloor = wordCount <= 800 ? 2 : 3;
-  if (questionCount === 0) {
-    issues.push('Zero question marks — the clearest tell of a composed essay rather than thinking out loud');
-    score -= 1;
-  } else if (questionCount < questionFloor) {
-    issues.push(`Only ${questionCount} question mark(s) — floor is ${questionFloor} at this length`);
-    score -= 0.5;
-  } else {
-    strengths.push('Meets the mid-post question floor');
+  if (questionCount > 0) {
+    strengths.push(`Uses ${questionCount} question mark(s); confirm each expresses a genuine turn`);
   }
 
   // Check for bold headers
@@ -156,4 +143,3 @@ export function checkVoice(content: string): VoiceCheckResult {
     strengths,
   };
 }
-

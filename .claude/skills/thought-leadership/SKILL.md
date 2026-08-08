@@ -1,243 +1,90 @@
 ---
 name: thought-leadership
-description: Generate blog posts and articles in Signal Dispatch voice—question-first openings, provisional conclusions, meta-aware self-interrogation, and public practice of thinking. Use when asked to write personal blog content, essays, reflective technical writing, or thought pieces that show the thinking process.
+description: Generate blog posts and articles in Signal Dispatch voice with an early reader payoff, evidence-aware claims, preserved scope, and provisionality only where warranted. Use for personal blog content, essays, reflective technical writing, and POVs.
 ---
 
 # Thought Leadership Generator
 
-Generate blog posts and articles in Signal Dispatch voice—showing the work, not just the conclusions.
-
-## When to Use This Skill
-
-- Writing personal blog posts
-- Creating reflective essays on technology or leadership
-- Drafting articles that explore ideas in public
-- Generating content that invites readers to think alongside you
-
-## Voice: Signal Dispatch
-
-**MANDATORY - Read `references/signal-dispatch-voice.md` completely for full voice specifications.**
-
-### Core Voice Identity
-
-| Characteristic | Description |
-|----------------|-------------|
-| Public Practice | Show the work, not just the result |
-| Meta-Aware | Writing about writing, thinking about thinking |
-| Vulnerable Competence | Genuine uncertainty paired with demonstrated skill |
-| Pattern Recognition | See what others don't, translate it clearly |
-| Provisional Conclusions | "Here's where I've landed—for now" |
-
-## Opening Patterns
-
-### The Question-First Hook (Most Common)
-
-Every strong post opens with tension, not thesis:
-
-```markdown
-✅ "There's a specific kind of tension that lives between finishing
-   a post and hitting publish."
-
-✅ "I've never been interested in being the loudest person in the room."
-
-✅ "What do you do when you're not in control, but still in motion?"
-
-❌ "In this post, I'll explore..." (too academic)
-
-❌ "Today I want to talk about..." (too casual blog-speak)
-```
-
-### The Uncomfortable Truth
-
-State the thing most people don't say out loud:
-
-```markdown
-✅ "I didn't start with a grand strategy. I started with fear."
-
-✅ "Sometimes I'm not writing for clarity. I'm writing to defend
-   myself against a comment that hasn't been written yet."
-```
-
-## Structural Patterns
-
-### 1. The Evolution Pattern
-
-Shows change explicitly. Makes growth visible.
-
-```markdown
-I used to [OLD APPROACH].
-Now [NEW APPROACH].
-That sounds like progress. And it is. But it also brings up
-a real question: [TENSION].
-```
-
-### 2. The "Here's Where I've Landed—For Now"
-
-Never claims final authority. Always provisional.
-
-Signal phrases:
-- "So here's where I've landed—for now."
-- "This is what I think today."
-- "For now, I'm trying to..."
-- "Maybe this isn't about [X] at all. Maybe it's about [Y]."
-
-### 3. Short Sections with Bold Headers
-
-Scannable. Punchy. Clear signposting.
-
-Header styles:
-- Questions ("Is This Just Me?")
-- Statements ("The Real Work Is Reading the Signal")
-- Provocations ("You're Not the Driver. But You're Still in the Car")
-
-## Tonal Elements
-
-### What to Include
-
-**1. Self-Interrogation (Without Self-Doubt)**
-
-```markdown
-✅ "At first, I wondered: Should I feel like a fraud?"
-
-✅ "So when people reflect something back—some version of
-   'you're built different'—my first instinct is to shrug it off.
-   But lately, I've stopped shrugging."
-```
-
-**2. Cultural Touchstones (Personal, Specific)**
-
-- Photography metaphors (woven throughout, not forced)
-- Spanish phrases when relevant
-- Specific pop culture references
-- Personal anecdotes from coaching, consulting, photography
-
-**3. Technical Depth with Plain Language**
-
-```markdown
-✅ "React has 3.3x the market share, but Svelte code is cleaner
-   and more deterministic. For AI agents: Less code = fewer errors.
-   Simpler patterns = more predictable generation."
-```
-
-**4. Conversational But Deliberate**
-
-```markdown
-✅ Uses fragments. Intentionally.
-✅ Questions as statements?
-✅ Em-dashes for parenthetical thoughts—like this
-✅ *Italics* for emphasis
-✅ **Bold** for key terms
-```
-
-### What to Avoid
-
-**1. Corporate Jargon**
-```markdown
-❌ "Leverage our extensive background to deliver impactful solutions"
-```
-
-**2. Academic Distance**
-```markdown
-❌ "In this essay, I will explore..."
-❌ "Research shows that..."
-```
-
-**3. Prescriptive Authority**
-```markdown
-❌ "You should always..."
-❌ "The right way to do this is..."
-❌ "Here are the 7 steps to..."
-
-✅ "Here's what I've found works—for me, in this context"
-```
-
-## Post Structure Templates
-
-### Template 1: The Reflection Post
-
-1. **Hook**: State the tension or uncomfortable truth
-2. **Context**: Set the scene—what prompted this reflection
-3. **The Shift**: "I used to think X. Now I think Y."
-4. **The Tension**: "But that brings up a question..."
-5. **Exploration**: Unpack the nuances
-6. **Provisional Landing**: "Here's where I am today"
-
-### Template 2: The Technical Deep-Dive
-
-1. **Hook**: Challenge conventional wisdom
-2. **The Setup**: What I was told / What the blog posts say
-3. **The Evidence**: What production data shows
-4. **The Analysis**: Why the gap exists
-5. **The Corrected Approach**: What I'm doing instead
-6. **The Lesson**: What this reveals about trust and verification
-
-### Template 3: The Leadership Insight
-
-1. **Hook**: The quiet truth most leaders won't say
-2. **The Pattern**: What I've noticed across teams/projects
-3. **The Example**: Specific instance that clarifies
-4. **The Framework**: How I think about it now
-5. **The Application**: What this looks like in practice
-6. **The Nuance**: Where this breaks down
-
-## Sentence-Level Mechanics
-
-### Rhythm and Pacing
-
-**Mix Long and Short**
-```markdown
-"I've never seen myself as exceptional. Not in a false humility
-kind of way. Just… I only know what it's like to be in my head."
-```
-
-**Use Fragments for Emphasis**
-```markdown
-"Two different modes. Same instinct."
-"Not recognition—direction."
-"Quietly. Precisely. With intent."
-```
-
-### Formatting
-
-- **Blockquotes** for key moments
-- **Bold** for section headers and key terms
-- *Italics* for vocal emphasis
-- Lists with parallel structure
-
-## Quality Checklist
-
-### Voice Authenticity
-- [ ] Opens with tension or question, not thesis
-- [ ] Shows the work, not just the conclusion
-- [ ] Includes at least one moment of self-interrogation
-- [ ] Uses "I" not "you should"
-- [ ] Provisional conclusions ("for now," "today," "so far")
-
-### Structural Integrity
-- [ ] Bold section headers for scannability
-- [ ] Mix of long and short sentences
-- [ ] At least one blockquote for emphasis
-- [ ] Parallel structure in lists
-- [ ] Clear transitions between sections
-
-### Tonal Balance
-- [ ] Conversational but not casual
-- [ ] Technical depth without jargon
-- [ ] Vulnerable without self-deprecating
-- [ ] Confident without prescriptive
-- [ ] Specific examples, not abstract theory
-
-### Red Flags (Rewrite if Present)
-- "In this post, I'll explore..."
-- "Research shows..."
-- "You should always..."
-- No questions, all answers
-- Too polished, no texture
-
-## The North Star
-
-**If a post sounds like it could have been written by any consultant,
-leadership coach, or tech blogger, it's not Signal Dispatch voice.**
-
-**If it sounds like someone thinking out loud while figuring out
-something hard—and inviting you to think alongside them—you're close.**
+Generate public prose that sounds like Nino without making the reader reconstruct
+the session that produced it.
+
+## Required source
+
+Read `references/signal-dispatch-voice.md` completely before drafting. It points
+to the canonical Signal Dispatch guide. The canonical guide wins if this summary
+drifts.
+
+## Apply the writing stack in order
+
+1. **Truth and evidence.** Mark each load-bearing claim as observed evidence, a
+   person's reported experience, or an open hypothesis. The Mom Test informs
+   evidence collection; it is not a prose style.
+2. **Reader and job.** Name who will read the piece and what they should
+   understand, decide, or check. Use Diátaxis only to assign documentation jobs,
+   not as an essay template.
+3. **Argument.** Put the sections under one controlling point. Use Minto/SCQA to
+   find the reader's question and answer it early; do not expose the framework's
+   labels or cadence in the finished prose.
+4. **Cognitive load.** Use explicit subjects, stable vocabulary, short blocks,
+   and one idea per sentence when the material is difficult. “CTE-based” is
+   local shorthand for respectful low-memory-load writing, not a grade-level
+   target or an established framework.
+5. **Voice.** Apply Signal Dispatch's composed, concrete, evidence-aware
+   register.
+6. **Surface mechanics.** Apply post, paper, tutorial, caption, email, or chat
+   mechanics only to that surface.
+
+## Drafting requirements
+
+- Write the controlling point and reader payoff before the draft.
+- Give the reader a concrete reason to care, then state what the piece
+  establishes within 150 words.
+- Re-derive a repository, study, log, or primary artifact when the claim depends
+  on it. Do not manufacture a search scene or count to imitate the corpus.
+- Put a concrete instance beside an abstract count.
+- Preserve scope in both directions. Do not move a general claim onto Nino, and
+  do not widen Nino's case into a claim about everyone.
+- Use adverse evidence when it changes scope or confidence.
+- Use self-interrogation only when evidence creates a genuine turn.
+- Do not present model steering, revision churn, or session chronology as a
+  changed point of view unless new evidence changed the claim.
+- State the supported conclusion plainly. Leave only the genuinely unresolved
+  boundary open.
+- Avoid corporate jargon, academic throat-clearing, prescriptive authority,
+  invented interior states, and the retired phrases in the canonical guide.
+
+## Diagnostics, not gates
+
+Recent posts often use defect-in-hand openers, short sentences, declarative
+headers, mid-post questions, mechanical re-derivation, adverse-evidence
+sections, fragments, and compressed closes. These patterns describe a sample.
+Do not add or preserve material solely to satisfy them. Questions have no floor.
+Sentence and close lengths do not control meaning.
+
+## Cross-register boundary
+
+Slack and email contribute only durable human behaviors: context before an ask,
+concrete alternatives, correction invitations, scope-aware hedging, and low
+corporate filler. Do not import Slack casing or punctuation, email greetings or
+sign-offs, or terminal imperatives. The email guide's held-out calibration lost
+to the no-guide control; more rules are not automatically more faithful.
+
+## Review checklist
+
+- [ ] A reader can state the point after the first 150 words
+- [ ] Observed evidence, reported experience, and hypotheses remain distinct
+- [ ] Every conclusion stays inside the evidence's scope
+- [ ] Counts have concrete instances and are not presented as outcomes
+- [ ] Any changed POV has changed evidence behind it
+- [ ] Headers carry the argument for a scanning reader
+- [ ] Technical terms remain precise and are defined where needed
+- [ ] The answer lands before an open or provisional close
+- [ ] No question, fragment, self-correction, or process beat exists only to
+      satisfy a voice pattern
+- [ ] The draft sounds like Nino without copying phrases from the guide
+
+## North star
+
+The reader gets the answer, can see what supports it, and knows what remains
+unproven. The voice makes that argument recognizable; it does not become the
+argument.

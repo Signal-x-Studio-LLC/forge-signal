@@ -247,11 +247,11 @@ forge generate pov --input ai-observations.md --mode thought-leadership --format
 ```
 
 **Expected Output**: 800-1200 word POV with:
-- Question-led opening (not thesis statement)
+- Concrete reason to care plus the controlling point within 150 words
 - Personal observations grounded in experience
-- Evolution of thinking ("I used to think... now I think...")
-- Self-interrogation without self-doubt
-- Provisional conclusions ("Here's where I've landed—for now")
+- Evidence status and claim scope preserved
+- Changed thinking only when evidence changed the claim
+- Supported conclusion with an honest boundary
 
 ---
 

@@ -26,7 +26,7 @@ This guide defines voice, structure, and quality standards for **Documentation**
 
 ### 2. Be Direct and Instructional
 
-**Thought Leadership**: Provisional ("Here's where I've landed—for now")
+**Thought Leadership**: States the supported conclusion and scopes what remains unproven
 **Architecture**: Authoritative ("The system uses...")
 **Documentation**: Imperative and clear ("Run this command...")
 

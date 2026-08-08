@@ -10,7 +10,7 @@ Four content modes with distinct voice, structure, and workflows. Selecting the 
 
 | Mode | Use For | Voice | Guide |
 |------|---------|-------|-------|
-| Thought Leadership | Blog posts, POVs, reflections | Narrative, provisional, question-led | `/docs/voice/thought-leadership-voice.md` |
+| Thought Leadership | Blog posts, POVs, reflections | Evidence-aware, reader-first, provisional where warranted | `/docs/voice/thought-leadership-voice.md` |
 | Solution Architecture | ADRs, specs, technical decks | Precise, definitive, diagram-heavy | `/docs/voice/solution-architecture-voice.md` |
 | Executive Advisory | Strategy decks, briefs, roadmaps | Confident consultant, outcome-focused | `/docs/voice/executive-advisory-voice.md` |
 | Documentation | Guides, tutorials, references | Instructional, direct, copy-paste ready | `/docs/voice/documentation-voice.md` |
@@ -21,7 +21,7 @@ Full taxonomy: `/docs/voice/content-taxonomy.md`
 
 ## Voice Rules (Non-Inferable)
 
-**Thought Leadership:** Open with tension/questions (never thesis). Show the work. Self-interrogate without self-doubt. End provisionally. Use intentional fragments. No corporate jargon.
+**Thought Leadership:** State the controlling point within 150 words. Separate observed evidence, reported experience, and hypothesis. Show primary evidence when the claim depends on it. Preserve scope in both directions. Questions, self-correction, and open endings are optional and must be earned by the evidence. Do not turn session steering into POV movement.
 
 **Solution Architecture:** Lead with conclusions. Be definitive ("The system uses X" not "I think we should"). No fragments. Diagrams over prose. No provisional language.
 
@@ -35,7 +35,7 @@ Full taxonomy: `/docs/voice/content-taxonomy.md`
 |---------|-----|
 | Provisional language in architecture ("I think we should use Lambda") | "The system uses Lambda" |
 | Technical depth in executive brief | Move to appendix |
-| No self-interrogation in thought leadership | Add "But that raises a question..." |
+| Point lands only at the end | Move the controlling point into the first 150 words |
 | Exploratory language in documentation | "Run this command to..." |
 
 ## Content Type -> Mode Mapping

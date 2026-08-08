@@ -20,9 +20,9 @@ Generate technical architecture documentation following arc42 template structure
 
 | Aspect | Thought Leadership | Architecture (THIS SKILL) |
 |--------|-------------------|---------------------------|
-| Opening | Questions, tension | Decisions, facts |
-| Tone | Provisional | Authoritative |
-| Language | "Here's where I've landed—for now" | "The system uses..." |
+| Opening | Reader payoff within 150 words | Decisions, facts |
+| Tone | Provisional only where evidence remains open | Authoritative |
+| Language | "This case shows X; Y remains unproven." | "The system uses..." |
 | Sentences | Intentional fragments | Complete, implementable |
 
 **MANDATORY - Read `references/solution-architecture-guide.md` for complete voice and structure guidelines.**

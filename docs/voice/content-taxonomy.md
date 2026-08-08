@@ -10,7 +10,7 @@ This document defines the three content modes Signal Forge supports, ensuring th
 
 | Mode | Purpose | Voice | Structure | Primary Audience |
 |------|---------|-------|-----------|------------------|
-| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Narrative, self-interrogating, defect-led (guide v1.3) | Investigation arc: defect → re-derivation → adverse evidence → compressed close | Broad professional audience |
+| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Composed, evidence-aware, provisional where warranted (guide v1.7) | Controlling point → evidence → implications → honest boundary | Broad professional audience |
 | **Solution Architecture** | Document technical decisions, enable implementation | Precise, confident, reference-grade | arc42/C4, ADRs, diagrams | Technical teams, architects |
 | **Executive Advisory** | Recommend strategy, align stakeholders | Consultant voice, pattern-based | SCR, Before-After-Breakthrough | Executives, decision-makers |
 | **Internal Strategy** | Drive internal decisions, align teams | Direct, factual, "we/our" | Short prose + tables + bullets | Leadership, cross-functional teams |
@@ -27,22 +27,22 @@ This document defines the three content modes Signal Forge supports, ensuring th
 - Personal brand content
 
 ### Voice Characteristics
-Reference: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.3)
+Reference: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.7)
 
 | Principle | Application |
 |-----------|-------------|
-| Open with the defect in hand | The concrete broken/missing/wrong thing, with scale, in sentence one or two (questions legal but dormant) |
-| Show the work | A mechanical re-derivation beat: go read the primary source, report the counts |
-| Adverse evidence | A dedicated section that weakens your own argument |
-| Self-interrogation | Procedural questions mid-post that audit your own method (≥2 question marks per ≤800 words) |
-| Compressed-reversal close | Final sentence under 12 words, landing concrete — never stock provisional phrases |
-| Intentional fragments | Use rhythm and pacing for emphasis; vary the shape |
+| Reader payoff | Give the reader a reason to care and state the controlling point within 150 words |
+| Evidence status | Separate observed evidence, reported experience, and hypothesis; preserve scope in both directions |
+| Show the work | Re-derive a primary source when the claim depends on it; do not manufacture a search scene |
+| Adverse evidence | Include it when it changes scope or confidence, not as a mandatory section |
+| Self-interrogation | Optional; use only for a genuine evidentiary turn, never to meet a question count |
+| Close | Complete the answer first; leave only the genuinely unresolved boundary open |
 
 ### Structure Patterns
-- Question-First Hook
-- The Evolution Pattern ("I used to think X, now I think Y")
-- Compare/Contrast
-- The "Here's Where I've Landed" closing
+- Governing answer with a concrete hook
+- Evidence-backed explanation
+- Compare/contrast when both sides are real
+- Changed view only when changed evidence supports it
 
 ### Anti-Patterns to Avoid
 - ❌ Corporate jargon
@@ -296,11 +296,12 @@ For documents that span modes, use clear section breaks:
 ## Quality Gates by Mode
 
 ### Thought Leadership Quality Checklist
-- [ ] Opens with the defect in hand (concrete + scale), not thesis
-- [ ] Shows the work — includes a mechanical re-derivation beat with raw counts
-- [ ] Carries an adverse-evidence section
-- [ ] Procedural self-interrogation mid-post (zero question marks = composed-essay tell)
-- [ ] Closes on a compressed reversal, final sentence under 12 words, no retired provisional phrases
+- [ ] Gives the reader a concrete reason to care and states the controlling point within 150 words
+- [ ] Distinguishes observed evidence, reported experience, and hypothesis
+- [ ] Shows primary evidence when the claim depends on it, with a concrete instance beside any abstract count
+- [ ] Keeps every conclusion inside the evidence's scope
+- [ ] Uses self-interrogation or adverse evidence only when it changes scope or confidence
+- [ ] Completes the answer before any open close; uses no retired provisional phrases
 - [ ] Conversational but deliberate tone
 
 ### Solution Architecture Quality Checklist

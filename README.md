@@ -10,7 +10,7 @@ Content generation tools produce generic output. An architecture doc shouldn't r
 
 | Mode | Use for | Voice |
 |------|---------|-------|
-| **Thought Leadership** | Blog posts, POVs, papers | Narrative, provisional, question-led |
+| **Thought Leadership** | Blog posts, POVs, papers | Composed, evidence-aware, provisional where warranted |
 | **Solution Architecture** | Architecture docs, ADRs, specs | Definitive, diagram-heavy, precise |
 | **Executive Advisory** | Strategy decks, briefs, roadmaps | Confident, outcome-focused |
 | **Documentation** | Guides, tutorials, references, explanations | Task-matched, direct, reader-aware |

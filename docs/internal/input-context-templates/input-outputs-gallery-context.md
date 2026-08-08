@@ -363,7 +363,7 @@ have the muscle to actually use this?
 - Multiple lines of inquiry
 - More evidence and examples
 - More nuance and qualification
-- Still ends provisionally
+- Completes the answer and scopes only the remaining uncertainty
 
 ---
 
