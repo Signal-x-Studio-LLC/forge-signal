@@ -44,31 +44,36 @@ projections:
   - id: decision
     output: library-role
     artifact: docs/work-library-record.md
-    render_as: executive-decision
+    render_as: markdown-document
+    kind: brief
     label: Work Library role
     route: /
   - id: source-overview
     output: source-reference
     artifact: README.md
-    render_as: reference-document
+    render_as: markdown-document
+    kind: reference
     label: Source overview
     route: /reference/source
   - id: extensibility
     output: method-reference
     artifact: docs/guides/extensibility.md
-    render_as: reference-document
+    render_as: markdown-document
+    kind: reference
     label: Extensibility guide
     route: /reference/extensibility
   - id: executive-advisory
     output: method-reference
     artifact: docs/voice/executive-advisory-voice.md
-    render_as: reference-document
+    render_as: markdown-document
+    kind: reference
     label: Executive advisory voice
     route: /reference/executive-advisory
   - id: skills
     output: method-reference
     artifact: docs/recommended-skills.md
-    render_as: reference-document
+    render_as: markdown-document
+    kind: reference
     label: Recommended skills
     route: /reference/skills
 
