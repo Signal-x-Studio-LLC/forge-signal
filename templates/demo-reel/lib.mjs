@@ -52,15 +52,25 @@ export function createTTS({ elevenLabsKey, openAiKey, voice, model, instructions
 	}
 	const backend = elevenLabsKey ? 'elevenlabs' : 'openai'
 
+	// Request-stitching chain (ElevenLabs canonical multi-segment pattern). Each TTS
+	// response returns a `request-id` header; passing the prior IDs as
+	// `previous_request_ids` conditions the next segment on the ACTUAL prior audio, not
+	// just its text — which is what holds the voice's timbre/accent/prosody steady across
+	// the separately-generated clips of one reel. Without it, each clip re-rolls within
+	// the voice's own `stability` randomness and the accent drifts between sections.
+	// Constraints (per docs): max 3 IDs, prior request fully processed (we await the body
+	// before the next call), <2h old, not eleven_v3. The chain is per-run state.
+	const requestIdChain = []
+
 	async function elevenLabs(text, outputPath, ctx = {}) {
 		const voiceId = ELEVENLABS_VOICES[voice?.toLowerCase()] || voice
 		// No voice_settings — use the voice id's OWN default config (overriding it fought
-		// those defaults and made delivery inconsistent). previous_text/next_text give the
-		// model the surrounding lines so prosody stays consistent across separately-
-		// generated clips — without that, an individual clip can drift in timbre/voice.
+		// those defaults). Continuity comes from request stitching (below); previous_text/
+		// next_text additionally give the model the surrounding lines for clean boundaries.
 		const body = { text, model_id: model }
 		if (ctx.previousText) body.previous_text = ctx.previousText
 		if (ctx.nextText) body.next_text = ctx.nextText
+		if (requestIdChain.length) body.previous_request_ids = requestIdChain.slice(-3)
 		const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
 			method: 'POST',
 			headers: {
@@ -72,6 +82,9 @@ export function createTTS({ elevenLabsKey, openAiKey, voice, model, instructions
 		})
 		if (!res.ok) throw new Error(`ElevenLabs TTS failed (${res.status}): ${await res.text()}`)
 		fs.writeFileSync(outputPath, Buffer.from(await res.arrayBuffer()))
+		// Chain this generation's id forward so the next segment stitches onto it.
+		const rid = res.headers.get('request-id') || res.headers.get('x-request-id')
+		if (rid) requestIdChain.push(rid)
 	}
 
 	async function openAi(text, outputPath) {
@@ -86,7 +99,36 @@ export function createTTS({ elevenLabsKey, openAiKey, voice, model, instructions
 		fs.writeFileSync(outputPath, Buffer.from(await res.arrayBuffer()))
 	}
 
-	return { backend, generate: backend === 'elevenlabs' ? elevenLabs : openAi }
+	/** ElevenLabs with-timestamps: one generation of the whole script, plus per-character
+	 *  start/end times. The caller slices the single continuous take into per-beat clips at
+	 *  the between-beat pauses — one voice, no stitching seams, but still aligned to the
+	 *  paced video. Returns null on the OpenAI backend (no timestamp support). */
+	async function elevenLabsTimed(text, outputPath) {
+		const voiceId = ELEVENLABS_VOICES[voice?.toLowerCase()] || voice
+		const res = await fetch(
+			`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`,
+			{
+				method: 'POST',
+				headers: { 'xi-api-key': elevenLabsKey, 'Content-Type': 'application/json' },
+				body: JSON.stringify({ text, model_id: model })
+			}
+		)
+		if (!res.ok) throw new Error(`ElevenLabs timed TTS failed (${res.status}): ${await res.text()}`)
+		const data = await res.json()
+		fs.writeFileSync(outputPath, Buffer.from(data.audio_base64, 'base64'))
+		const a = data.alignment || data.normalized_alignment
+		return {
+			chars: a.characters,
+			starts: a.character_start_times_seconds,
+			ends: a.character_end_times_seconds
+		}
+	}
+
+	return {
+		backend,
+		generate: backend === 'elevenlabs' ? elevenLabs : openAi,
+		timed: backend === 'elevenlabs' ? elevenLabsTimed : null
+	}
 }
 
 /** Pixel dimensions { width, height } of a video's first video stream, via ffprobe. */
@@ -100,6 +142,21 @@ export function probeDimensions(videoPath) {
 		.trim()
 	const [width, height] = out.split(',').map((n) => parseInt(n, 10))
 	return { width, height }
+}
+
+/** Source frame rate as an ffmpeg-ready string (e.g. "25/1"), via ffprobe. The output
+ *  MUST be encoded at this rate: resampling the capture to a different fps (e.g. 25→30)
+ *  duplicates frames on a non-integer cadence, which reads as a constant judder/flicker. */
+export function probeFrameRate(videoPath) {
+	const out = execFileSync(
+		'ffprobe',
+		['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=r_frame_rate', '-of', 'csv=p=0', videoPath],
+		{ stdio: ['ignore', 'pipe', 'inherit'] }
+	)
+		.toString()
+		.trim()
+	// Guard against an unreadable/zero rate; fall back to a sane 25 (Playwright's default).
+	return /^\d+\/\d+$/.test(out) && !out.startsWith('0/') ? out : '25'
 }
 
 /** Duration of an audio/video file in seconds, via ffprobe. */

@@ -21,3 +21,6 @@ src/presets/local/
 # Generated output
 output/
 /content/
+
+# Scratch frame dumps from demo-reel iteration
+templates/demo-reel/_*.png

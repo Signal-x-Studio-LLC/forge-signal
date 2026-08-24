@@ -10,7 +10,7 @@ Four content modes with distinct voice, structure, and workflows. Selecting the 
 
 | Mode | Use For | Voice | Guide |
 |------|---------|-------|-------|
-| Thought Leadership | Blog posts, POVs, reflections | Narrative, provisional, question-led | `/docs/voice/thought-leadership-voice.md` |
+| Thought Leadership | Blog posts, POVs, reflections | Narrative, self-interrogating, defect-led (guide v1.3) | `/docs/voice/thought-leadership-voice.md` |
 | Solution Architecture | ADRs, specs, technical decks | Precise, definitive, diagram-heavy | `/docs/voice/solution-architecture-voice.md` |
 | Executive Advisory | Strategy decks, briefs, roadmaps | Confident consultant, outcome-focused | `/docs/voice/executive-advisory-voice.md` |
 | Documentation | Guides, tutorials, references | Instructional, direct, copy-paste ready | `/docs/voice/documentation-voice.md` |
@@ -21,7 +21,7 @@ Full taxonomy: `/docs/voice/content-taxonomy.md`
 
 ## Voice Rules (Non-Inferable)
 
-**Thought Leadership:** Open with tension/questions (never thesis). Show the work. Self-interrogate without self-doubt. End provisionally. Use intentional fragments. No corporate jargon.
+**Thought Leadership:** Open with the defect in hand — the concrete broken/missing/wrong thing, with scale (question openers legal but dormant; never thesis). Include a mechanical re-derivation beat (go read the source, report counts) and an adverse-evidence section. Procedural self-interrogation mid-post (≥2 question marks). Close on a compressed reversal, final sentence under 12 words, concrete — no stock provisional phrases ("here's where I've landed—for now" is a retired tell). Intentional fragments, varied. No corporate jargon.
 
 **Solution Architecture:** Lead with conclusions. Be definitive ("The system uses X" not "I think we should"). No fragments. Diagrams over prose. No provisional language.
 
@@ -35,7 +35,7 @@ Full taxonomy: `/docs/voice/content-taxonomy.md`
 |---------|-----|
 | Provisional language in architecture ("I think we should use Lambda") | "The system uses Lambda" |
 | Technical depth in executive brief | Move to appendix |
-| No self-interrogation in thought leadership | Add "But that raises a question..." |
+| No self-interrogation in thought leadership | Add a procedural question at the argument's turn ("Hadn't I already solved this?") — audit the method, not feelings |
 | Exploratory language in documentation | "Run this command to..." |
 
 ## Content Type -> Mode Mapping

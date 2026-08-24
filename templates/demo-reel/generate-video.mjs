@@ -34,6 +34,7 @@ import {
 	createTTS,
 	probeDuration,
 	probeDimensions,
+	probeFrameRate,
 	renderCaptionPng,
 	CAPTION_BAND_H
 } from './lib.mjs'
@@ -72,6 +73,13 @@ const model =
 const tts = createTTS({ elevenLabsKey, openAiKey, voice, model, instructions: manifest.instructions })
 
 const skipTTS = process.env.SKIP_TTS === '1'
+// Captions-only cut: keep the timed caption overlays, omit the narration track entirely
+// (for dropping your own voiceover on in an editor). No TTS calls, no audio in the mux.
+const noAudio = process.env.REEL_NO_AUDIO === '1'
+// Caption placement: append a band BELOW the video (default, for 16:9 desktop captures so
+// the UI is never covered) vs OVERLAY the band over the video's lower edge (for vertical
+// mobile captures that already fill the 9:16 frame — there's no room to append).
+const overlayCaptions = process.env.REEL_CAPTION_OVERLAY === '1'
 const sec = (ms) => (ms / 1000).toFixed(3)
 
 async function main() {
@@ -82,50 +90,87 @@ async function main() {
 	console.log(`  output:   ${OUT}\n`)
 
 	// Caption overlays must match the actual recorded video size, not a fixed constant.
-	// The caption band is appended BELOW the video (the frame is padded by CAPTION_BAND_H)
-	// so the product screenshot stays full-frame, never covered by the band.
-	const { width, height } = probeDimensions(VIDEO)
-	const outH = height + CAPTION_BAND_H
+	// Default: append the band BELOW the video (pad the frame by CAPTION_BAND_H) so the
+	// screenshot stays full-frame. Overlay mode: keep the frame and lay the band over the
+	// video's lower edge (vertical reels already fill 9:16).
+	const probed = probeDimensions(VIDEO)
+	// REEL_OUT_W/H upscale the working canvas (overlay mode only) — a native mobile capture
+	// is small (e.g. 432-wide) but social wants ≥1080; scaling here keeps the caption band
+	// + fonts proportional to the final frame instead of huge on the small capture.
+	const width = (overlayCaptions && Number(process.env.REEL_OUT_W)) || probed.width
+	const height = (overlayCaptions && Number(process.env.REEL_OUT_H)) || probed.height
+	const outH = overlayCaptions ? height : height + CAPTION_BAND_H
+	// Encode at the capture's own frame rate — resampling (e.g. 25→30) duplicates frames
+	// on a non-integer cadence and shows up as a constant flicker.
+	const fps = probeFrameRate(VIDEO)
 	console.log(`  video size: ${width}x${height} → output ${width}x${outH} (caption band below)`)
 
-	// 1. Per-step narration + caption overlay
-	console.log('[1/3] TTS + caption overlays')
-	const audioPaths = []
+	// 1. Per-step caption overlays + (unless captions-only) a SINGLE-PASS narration track.
+	console.log(noAudio ? '[1/3] Caption overlays (no narration)' : '[1/3] Captions + single-pass narration')
 	const framePaths = []
 	for (let i = 0; i < steps.length; i++) {
 		const idx = String(i + 1).padStart(2, '0')
-		const audioPath = path.join(AUDIO_DIR, `v${idx}.mp3`)
 		const framePath = path.join(FRAMES_DIR, `cap-${idx}.png`)
-		if (!(skipTTS && fs.existsSync(audioPath))) {
-			console.log(`  ${idx} → ${steps[i].speechText.length} chars`)
-			// Pass neighbouring lines so ElevenLabs keeps prosody consistent across clips.
-			await tts.generate(steps[i].speechText, audioPath, {
-				previousText: steps[i - 1]?.speechText,
-				nextText: steps[i + 1]?.speechText
-			})
-			await new Promise((r) => setTimeout(r, 600))
-		} else {
-			console.log(`  ${idx} cached`)
-		}
 		// Caption canvas is the PADDED height so the band lands in the appended bottom
 		// strip (y = height), clear of the screenshot above it.
 		renderCaptionPng({ caption: steps[i].speechText, position: 'bottom', width, height: outH }, framePath)
-		audioPaths.push(audioPath)
 		framePaths.push(framePath)
+	}
+	// Narration is ONE ElevenLabs generation of the whole script (a single continuous voice —
+	// no per-clip stitching seams, which sound klunky at the joins), then SLICED into per-beat
+	// clips at the between-beat pauses so each beat still lands on its video cue. Beats are
+	// joined by blank lines so the model breathes between them, giving clean cut points.
+	const SEP = '\n\n'
+	const clipPaths = []
+	if (!noAudio) {
+		const fullAudio = path.join(AUDIO_DIR, 'narration.mp3')
+		const fullText = steps.map((s) => s.speechText.trim()).join(SEP)
+		if (tts.timed) {
+			console.log(`  one-pass narration (timestamped) → ${fullText.length} chars, slicing ${steps.length} beats`)
+			const al = await tts.timed(fullText, fullAudio)
+			const n = Math.min(al.starts.length, al.ends.length)
+			let off = 0
+			for (let k = 0; k < steps.length; k++) {
+				const len = steps[k].speechText.trim().length
+				const startSec = al.starts[Math.min(off, n - 1)] ?? 0
+				const endSec = al.ends[Math.min(off + len - 1, n - 1)] ?? startSec
+				const clip = path.join(AUDIO_DIR, `v${String(k + 1).padStart(2, '0')}.mp3`)
+				execFileSync(
+					'ffmpeg',
+					['-y', '-i', fullAudio, '-ss', startSec.toFixed(3), '-to', endSec.toFixed(3),
+						'-c:a', 'libmp3lame', '-q:a', '2', clip],
+					{ stdio: ['ignore', 'ignore', 'inherit'] }
+				)
+				clipPaths.push(clip)
+				off += len + SEP.length
+			}
+		} else {
+			// OpenAI fallback (no timestamps): per-step generation.
+			for (let k = 0; k < steps.length; k++) {
+				const clip = path.join(AUDIO_DIR, `v${String(k + 1).padStart(2, '0')}.mp3`)
+				await tts.generate(steps[k].speechText, clip)
+				clipPaths.push(clip)
+			}
+		}
 	}
 
 	// 2. Build the ffmpeg graph: trim lead-in, overlay timed captions, place narration.
 	console.log('\n[2/3] Compositing narration + captions over the video')
 	const inputs = ['-ss', sec(manifest.leadInMs || 0), '-i', VIDEO]
 	framePaths.forEach((f) => inputs.push('-i', f))
-	audioPaths.forEach((a) => inputs.push('-i', a))
+	if (!noAudio) clipPaths.forEach((c) => inputs.push('-i', c))
 
 	const nFrames = framePaths.length
 	const filters = []
 
-	// Pad the video into the taller output frame (black band appended at the bottom) so
-	// the screenshot is full-frame at top and the captions overlay the padding, not the UI.
-	filters.push(`[0:v]pad=${width}:${outH}:0:0:black[base]`)
+	// Default: pad the video into the taller output frame (band appended at the bottom) so
+	// the screenshot is full-frame and captions overlay the padding. Overlay mode: no pad —
+	// the caption band lands over the video's lower edge.
+	filters.push(
+		overlayCaptions
+			? `[0:v]scale=${width}:${height}[base]`
+			: `[0:v]pad=${width}:${outH}:0:0:black[base]`
+	)
 
 	// Caption overlay chain — each caption is visible only on its [start, end] window.
 	let vlabel = 'base'
@@ -140,29 +185,30 @@ async function main() {
 		vlabel = out
 	})
 
-	// Narration — delay each clip to its step start, then sum (paced ⇒ non-overlapping).
-	const amixLabels = []
-	steps.forEach((s, i) => {
-		const audioInput = 1 + nFrames + i
-		filters.push(`[${audioInput}:a]adelay=${s.startMs}|${s.startMs}[a${i}]`)
-		amixLabels.push(`[a${i}]`)
-	})
-	filters.push(`${amixLabels.join('')}amix=inputs=${steps.length}:normalize=0[aout]`)
+	// Narration — each beat's clip (sliced from the one generation) delayed to its cue, then
+	// summed. The clips are non-overlapping (paced) so this is placement, not mixing; the
+	// voice is continuous across them because they're one take. Skipped for the silent cut.
+	if (!noAudio) {
+		const amixLabels = []
+		steps.forEach((s, i) => {
+			const audioInput = 1 + nFrames + i
+			filters.push(`[${audioInput}:a]adelay=${s.startMs}|${s.startMs}[a${i}]`)
+			amixLabels.push(`[a${i}]`)
+		})
+		filters.push(`${amixLabels.join('')}amix=inputs=${steps.length}:normalize=0[aout]`)
+	}
 
 	const args = [
 		'-y',
 		...inputs,
 		'-filter_complex', filters.join(';'),
 		'-map', '[vout]',
-		'-map', '[aout]',
+		// Narration track, or none (captions-only cut → bring your own voiceover).
+		...(noAudio ? ['-an'] : ['-map', '[aout]', '-c:a', 'aac', '-b:a', '192k', '-shortest']),
 		'-c:v', 'libx264',
 		'-pix_fmt', 'yuv420p',
-		'-r', '30',
-		'-c:a', 'aac',
-		'-b:a', '192k',
+		'-r', fps,
 		'-movflags', '+faststart',
-		// End at the later of the video's tour content or the last narration tail.
-		'-shortest',
 		OUT
 	]
 	execFileSync('ffmpeg', args, { stdio: ['ignore', 'inherit', 'inherit'] })
