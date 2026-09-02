@@ -2,7 +2,7 @@
 
 This file is a pointer. The canonical voice guide lives in the blog repo.
 
-**Canonical:** `~/Workspace/dev/apps/blog/docs/signal-dispatch-voice-guide.md`
+**Canonical:** `~/Workspace/dev/sites/nino/blog/docs/signal-dispatch-voice-guide.md`
 
 - **Version:** 1.3 (2026-08-03 — adversarial audit vs the 8 most recent posts + held-out generation test; defect-in-hand cold open documented as current dominant, question-led opener marked dormant)
 - **Source:** Empirical analysis of 156 blog posts, 15 deep-read corpus sample, 2026-08-03 audit

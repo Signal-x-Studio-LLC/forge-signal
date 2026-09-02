@@ -5,7 +5,7 @@ import type { VoiceDefinition } from '../../core/registries/types.js';
  * Structure and sentence targets come from the v1.3 adversarial audit vs the 8
  * most recent posts + held-out generation test (2026-08-03); principle 9 comes
  * from v1.5 §1b, scope preservation in both directions (2026-08-03/04). Canonical guide:
- * ~/Workspace/dev/apps/blog/docs/signal-dispatch-voice-guide.md
+ * ~/Workspace/dev/sites/nino/blog/docs/signal-dispatch-voice-guide.md
  * (pointer: docs/voice/thought-leadership-voice.md).
  */
 export const thoughtLeadershipVoice: VoiceDefinition = {
