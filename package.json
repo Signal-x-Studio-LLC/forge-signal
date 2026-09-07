@@ -14,7 +14,8 @@
     "generate": "tsx src/cli/index.ts",
     "migrate-decks": "tsx scripts/migrate-decks.ts",
     "audit:council": "tsx scripts/ai-council-audit.ts",
-    "reader:check": "node tools/lib/encounter-audit.mjs --root=. --strict"
+    "reader:check": "node tools/lib/encounter-audit.mjs --root=. --strict",
+    "test:voice-rules": "tsx scripts/test-voice-rule-reconciliation.ts"
   },
   "keywords": [
     "content-generation",

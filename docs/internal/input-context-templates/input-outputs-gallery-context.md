@@ -298,18 +298,17 @@ guarantees insufficient.
 **Purpose**: 800-1200 word opinion piece exploring an idea.
 
 **Typical Structure**:
-- Opening hook (question or tension)
-- Personal observation or experience
+- An opening the argument earns, with the controlling point clear early
+- Personal observation or experience when the source supports it
 - Exploration of the idea
-- Possible objections or complications
-- Provisional conclusion
+- Evidence or complications when they change the claim's scope
+- An ending that completes the argument and names any real unresolved boundary
 
 **Voice Characteristics**:
-- Question-led opening
-- Personal, grounded perspective
-- Self-interrogation present
-- Provisional, not prescriptive
-- Natural rhythm with intentional fragments
+- Earned opening and clear controlling point
+- Personal, grounded perspective when source-supported
+- Evidence and uncertainty attached to the claims they affect
+- Natural rhythm without prescribed question, fragment, or ending patterns
 
 **Sample Opening**:
 ```
@@ -328,8 +327,7 @@ Now I'm not so sure.
 
 **Sample Closing**:
 ```
-So here's where I've landed—for now. Enterprise AI success
-isn't about the model. It's about the muscle. The
+Enterprise AI success isn't about the model. It's about the muscle. The
 organizational muscle to actually change how work gets done.
 
 That's harder to demo in a boardroom. But it's the only
@@ -356,7 +354,7 @@ have the muscle to actually use this?
 - Multiple sections exploring different angles
 - Evidence and examples throughout
 - Synthesis and implications
-- Provisional conclusions
+- Leaves an unresolved boundary visible only when the evidence supports one
 
 **Voice Characteristics**:
 - Same as POV but more depth

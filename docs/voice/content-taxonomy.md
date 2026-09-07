@@ -10,7 +10,7 @@ This document defines the three content modes Signal Forge supports, ensuring th
 
 | Mode | Purpose | Voice | Structure | Primary Audience |
 |------|---------|-------|-----------|------------------|
-| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Composed, evidence-aware, provisional where warranted (guide v1.7) | Controlling point → evidence → implications → honest boundary | Broad professional audience |
+| **Thought Leadership** | Establish expertise, share insights, provoke thinking | Evidence-aware, reader-first, provisional where the evidence remains open (guide v1.8) | Argument shape earned by the source and reader job | Broad professional audience |
 | **Solution Architecture** | Document technical decisions, enable implementation | Precise, confident, reference-grade | arc42/C4, ADRs, diagrams | Technical teams, architects |
 | **Executive Advisory** | Recommend strategy, align stakeholders | Consultant voice, pattern-based | SCR, Before-After-Breakthrough | Executives, decision-makers |
 | **Internal Strategy** | Drive internal decisions, align teams | Direct, factual, "we/our" | Short prose + tables + bullets | Leadership, cross-functional teams |
@@ -27,22 +27,21 @@ This document defines the three content modes Signal Forge supports, ensuring th
 - Personal brand content
 
 ### Voice Characteristics
-Reference: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.7)
+Reference: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.8)
 
 | Principle | Application |
 |-----------|-------------|
-| Reader payoff | Give the reader a reason to care and state the controlling point within 150 words |
-| Evidence status | Separate observed evidence, reported experience, and hypothesis; preserve scope in both directions |
-| Show the work | Re-derive a primary source when the claim depends on it; do not manufacture a search scene |
-| Adverse evidence | Include it when it changes scope or confidence, not as a mandatory section |
-| Self-interrogation | Optional; use only for a genuine evidentiary turn, never to meet a question count |
-| Close | Complete the answer first; leave only the genuinely unresolved boundary open |
+| Opening | Use a defect, tension, governing answer, or scene when it serves the argument; state the controlling point within the first 150 words |
+| Evidence | Re-derive a primary source and report a count when the claim depends on it; do not manufacture either |
+| Scope | Include adverse evidence, correction, or an unresolved boundary only when it changes the claim's scope or confidence |
+| First person | Preserve the source's subject and attribution; never relocate a general observation onto the author |
+| Form | Questions, fragments, headings, and endings are available forms, never quotas or score targets |
 
 ### Structure Patterns
-- Governing answer with a concrete hook
-- Evidence-backed explanation
-- Compare/contrast when both sides are real
-- Changed view only when changed evidence supports it
+
+Choose the structure that lets the reader follow the evidence and controlling
+point. Do not manufacture a question-led hook, evolution story, investigation,
+or closing shape to imitate a corpus pattern.
 
 ### Anti-Patterns to Avoid
 - ❌ Corporate jargon
@@ -296,12 +295,11 @@ For documents that span modes, use clear section breaks:
 ## Quality Gates by Mode
 
 ### Thought Leadership Quality Checklist
-- [ ] Gives the reader a concrete reason to care and states the controlling point within 150 words
-- [ ] Distinguishes observed evidence, reported experience, and hypothesis
-- [ ] Shows primary evidence when the claim depends on it, with a concrete instance beside any abstract count
-- [ ] Keeps every conclusion inside the evidence's scope
-- [ ] Uses self-interrogation or adverse evidence only when it changes scope or confidence
-- [ ] Completes the answer before any open close; uses no retired provisional phrases
+- [ ] The controlling point is clear within the first 150 words
+- [ ] Claims, examples, and first-person statements preserve their source and subject
+- [ ] Evidence, counts, corrections, and adverse evidence appear only when they change what the reader can assess
+- [ ] Questions, fragments, headings, and the ending serve the piece rather than a quota
+- [ ] Does not use a retired provisional phrase
 - [ ] Conversational but deliberate tone
 
 ### Solution Architecture Quality Checklist
