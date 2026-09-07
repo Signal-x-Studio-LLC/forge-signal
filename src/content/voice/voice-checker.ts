@@ -15,18 +15,13 @@ export function checkVoice(content: string): VoiceCheckResult {
   const strengths: string[] = [];
   let score = 10;
 
-  // Observe opening shape (guide v1.7: corpus patterns are diagnostics, not
-  // gates; the controlling point and evidence matter more than hook shape).
-  const firstParagraph = content.split('\n\n')[0] || '';
-  const hasDefect =
-    /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
-      firstParagraph
-    );
-  const hasQuestion = /[?]/.test(firstParagraph);
-  const hasTension = /tension|uncomfortable|dilemma|challenge/.test(firstParagraph.toLowerCase());
-
-  if (hasDefect || hasQuestion || hasTension) {
-    strengths.push('Uses a recognizable opening hook; confirm the controlling point follows within 150 words');
+  if (!content.trim()) {
+    return {
+      score: 0,
+      passed: false,
+      issues: ['Content is empty'],
+      strengths,
+    };
   }
 
   // Check for corporate jargon
@@ -53,7 +48,7 @@ export function checkVoice(content: string): VoiceCheckResult {
     }
   }
 
-  // Check for retired provisional tells (guide v1.3: these phrases signal
+  // Check for retired provisional tells (guide v1.8: these phrases signal
   // templated writing — presence is the defect, not absence)
   for (const tell of RETIRED_PROVISIONAL_TELLS) {
     if (content.toLowerCase().includes(tell.toLowerCase())) {
@@ -71,67 +66,6 @@ export function checkVoice(content: string): VoiceCheckResult {
       'Uses the explicit evolution formula ("I used to think X, now Y") — show changed thinking inside the argument instead'
     );
     score -= 0.5;
-  }
-
-  // Question count is a diagnostic only (guide v1.7). Questions do not make a
-  // draft thoughtful, and their absence is not a defect.
-  const questionCount = (content.match(/\?/g) || []).length;
-  if (questionCount > 0) {
-    strengths.push(`Uses ${questionCount} question mark(s); confirm each expresses a genuine turn`);
-  }
-
-  // Check for bold headers
-  const hasBoldHeaders = /^\*\*[^*]+\*\*$/m.test(content);
-  if (!hasBoldHeaders) {
-    issues.push('Missing bold section headers');
-    score -= 0.5;
-  } else {
-    strengths.push('Uses bold headers for scannability');
-  }
-
-  // Check for intentional fragments
-  const hasFragments = /^[A-Z][^.!?]*\.$/m.test(content);
-  if (!hasFragments) {
-    // Not a requirement, but a strength
-  } else {
-    strengths.push('Uses intentional fragments for rhythm');
-  }
-
-  // Check for excessive client name repetition (should use "you" / "your organization")
-  // This is a heuristic - if a capitalized word appears more than 10 times in 1000 words, flag it
-  const words = content.split(/\s+/);
-  const wordCounts: Record<string, number> = {};
-  words.forEach(word => {
-    const clean = word.replace(/[^\w]/g, '').trim();
-    if (clean.length > 3 && /^[A-Z]/.test(clean)) {
-      wordCounts[clean] = (wordCounts[clean] || 0) + 1;
-    }
-  });
-  
-  const contentLength = words.length;
-  const threshold = Math.max(5, Math.floor(contentLength / 200)); // Roughly 5 per 1000 words
-  
-  for (const [word, count] of Object.entries(wordCounts)) {
-    // Skip common words that start with capitals
-    if (['The', 'This', 'That', 'There', 'These', 'Those', 'When', 'Where', 'What', 'Why', 'How'].includes(word)) {
-      continue;
-    }
-    
-    if (count > threshold) {
-      // Check if it's likely a client name (appears frequently)
-      const ratio = count / contentLength;
-      if (ratio > 0.02) { // More than 2% of words
-        issues.push(`Excessive repetition of "${word}" - consider using "you" / "your organization" instead`);
-        score -= 1;
-      }
-    }
-  }
-
-  // Check for natural "you" usage (strength)
-  const youCount = (content.match(/\byou\b/gi) || []).length;
-  const yourCount = (content.match(/\byour\b/gi) || []).length;
-  if (youCount + yourCount > 5) {
-    strengths.push('Uses natural "you" / "your" references');
   }
 
   score = Math.max(0, Math.min(10, score));

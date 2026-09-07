@@ -2,9 +2,9 @@
 
 This file is a pointer. The canonical voice guide lives in the blog repo.
 
-**Canonical:** `~/Workspace/dev/apps/blog/docs/signal-dispatch-voice-guide.md`
+**Canonical:** `~/Workspace/dev/sites/nino/blog/docs/signal-dispatch-voice-guide.md`
 
-- **Version:** 1.7 (2026-08-08 — writing decision stack, cross-register invariants, evidence-first payoff, corpus metrics demoted to diagnostics)
+- **Version:** 1.8 (2026-09-07 — remove form quotas and arbitrary rewrites; keep evidence and attribution protections)
 - **Source:** Empirical analysis of 156 blog posts, recent-post audit, held-out generation test, and cross-register audit against Slack and email
 
 ## Why this file exists

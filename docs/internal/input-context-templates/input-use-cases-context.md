@@ -247,11 +247,10 @@ forge generate pov --input ai-observations.md --mode thought-leadership --format
 ```
 
 **Expected Output**: 800-1200 word POV with:
-- Concrete reason to care plus the controlling point within 150 words
-- Personal observations grounded in experience
-- Evidence status and claim scope preserved
-- Changed thinking only when evidence changed the claim
-- Supported conclusion with an honest boundary
+- A controlling point made clear within the first 150 words
+- Personal observations only where the supplied source assigns them to the author
+- Evidence and uncertainty scoped to what the source supports
+- A form that serves the argument without a required question, evolution beat, or closing shape
 
 ---
 
@@ -296,10 +295,10 @@ forge agent generate paper --input retail-research.md --research --iterate --for
 ```
 
 **Expected Output**: 3000-8000 word strategy paper with:
-- Compelling opening tension
+- An earned opening and a controlling point made clear early
 - Multiple sections exploring different angles
 - Evidence from research and experience
-- Clear evolution of thinking
+- Clear claims with uncertainty limited to the evidence boundary
 - Specific examples and case references
 - Thoughtful conclusion without prescriptive mandates
 

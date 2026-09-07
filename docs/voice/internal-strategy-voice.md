@@ -207,7 +207,7 @@ Follow this pattern:
 | Aspect | Thought Leadership | Executive Advisory | Internal Strategy | Solution Architecture |
 |--------|-------------------|-------------------|-------------------|----------------------|
 | **Perspective** | Author's POV | Consultant → client | Team → leadership | Engineer → engineers |
-| **Opening** | Question / tension | Problem + recommendation | Overview + problem | Executive summary |
+| **Opening** | Earned opening; controlling point early | Problem + recommendation | Overview + problem | Executive summary |
 | **Voice** | Exploratory, provisional | Confident, directive | Direct, factual | Precise, definitive |
 | **Pronouns** | "I" | "I recommend" / "you" | "We" / "our" | Passive / system names |
 | **Structure** | Narrative arc | Scannable sections | Short prose + tables | Formal templates |

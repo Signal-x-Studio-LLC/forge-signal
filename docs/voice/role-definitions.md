@@ -44,16 +44,14 @@ Workflows are defined in `src/presets/workflows/` and registered via `registerWo
 
 **Purpose**: Generate narrative content from raw context using blog voice principles
 
-**Voice Guide**: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.7)
+**Voice Guide**: `docs/voice/thought-leadership-voice.md` (pointer to the canonical Signal Dispatch guide, v1.8)
 
 **Responsibilities**:
 - Transform meeting notes, observations, raw ideas into narrative content
-- Give the reader a concrete reason to care and state the controlling point within 150 words
-- Classify claims as observed evidence, reported experience, or hypothesis
-- Re-derive primary evidence when the claim depends on it
-- Preserve claim scope in both directions
-- Use self-interrogation or provisional language only where the evidence warrants it
-- Omit session steering and revision churn unless evidence changed the claim
+- State the controlling point within the first 150 words; choose an opening the argument earns
+- Show evidence when it helps the reader assess the claim; do not narrate investigation by default
+- Keep uncertainty limited to the unresolved boundary; do not use retired provisional phrases
+- Preserve first-person attribution and the source's scope
 - Generate multiple angles/approaches
 
 **Input**: Raw meeting notes, observations, reflections, ideas
@@ -62,9 +60,8 @@ Workflows are defined in `src/presets/workflows/` and registered via `registerWo
 **Quality Markers**:
 - [ ] States the controlling point within 150 words
 - [ ] Keeps evidence status and claim scope honest
-- [ ] Shows evolution only when evidence changed the conclusion
-- [ ] Uses intentional fragments for rhythm
-- [ ] Completes the answer before leaving uncertainty open
+- [ ] Uses questions, fragments, headings, and endings only when they help this piece
+- [ ] Does not use a retired provisional phrase
 
 ### 2. Copywriter
 

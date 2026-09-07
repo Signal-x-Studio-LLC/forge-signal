@@ -32,18 +32,6 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
   const problemZones: TextRange[] = [];
   const preservationZones: TextRange[] = [];
 
-  // Analyze opening
-  const openingAnalysis = analyzeOpening(content);
-  if (openingAnalysis.issue) {
-    suggestions.push(openingAnalysis.issue);
-  }
-  if (openingAnalysis.problemZone) {
-    problemZones.push(openingAnalysis.problemZone);
-  }
-  if (openingAnalysis.preservationZone) {
-    preservationZones.push(openingAnalysis.preservationZone);
-  }
-
   // Analyze jargon
   const jargonAnalysis = analyzeJargon(content);
   suggestions.push(...jargonAnalysis.suggestions);
@@ -59,13 +47,13 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
   suggestions.push(...prescriptiveAnalysis.suggestions);
   problemZones.push(...prescriptiveAnalysis.problemZones);
 
-  // Analyze retired provisional tells (guide v1.3: presence is the defect)
+  // Analyze retired provisional tells (guide v1.8: presence is the defect)
   const retiredTellAnalysis = analyzeRetiredTells(content);
   suggestions.push(...retiredTellAnalysis.suggestions);
   problemZones.push(...retiredTellAnalysis.problemZones);
 
-  // Analyze templated evolution formula (guide v1.3: explicit before/after
-  // framing is a tic — evolution shows inside the argument)
+  // Analyze a templated evolution formula without inventing a replacement
+  // narrative for a source that contains no real evidentiary change.
   const evolutionAnalysis = analyzeEvolutionPattern(content);
   if (evolutionAnalysis.issue) {
     suggestions.push(evolutionAnalysis.issue);
@@ -73,10 +61,6 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
   if (evolutionAnalysis.problemZone) {
     problemZones.push(evolutionAnalysis.problemZone);
   }
-
-  // Observe genuine questions without requiring self-interrogation.
-  const interrogationAnalysis = analyzeSelfInterrogation(content);
-  if (interrogationAnalysis.preservationZone) preservationZones.push(interrogationAnalysis.preservationZone);
 
   // Calculate confidence based on issue clarity
   const confidence = calculateConfidence(suggestions, baseResult);
@@ -99,54 +83,6 @@ export function checkVoiceEnhanced(content: string): EnhancedVoiceCheckResult {
 // =============================================================================
 // Analysis Functions
 // =============================================================================
-
-function analyzeOpening(content: string): {
-  issue?: RevisionSuggestion;
-  problemZone?: TextRange;
-  preservationZone?: TextRange;
-} {
-  const paragraphs = content.split('\n\n');
-  const firstParagraph = paragraphs[0] || '';
-  // Guide v1.7: hook shapes are diagnostics, not gates.
-  const hasDefect =
-    /\b(broke|broken|failed|failing|missing|wasn't there|didn't exist|wrong|silently|deleted|no error)\b/i.test(
-      firstParagraph
-    );
-  const hasQuestion = /[?]/.test(firstParagraph);
-  const hasTension =
-    /tension|uncomfortable|dilemma|challenge|paradox|contradiction/.test(
-      firstParagraph.toLowerCase()
-    );
-
-  if (hasDefect || hasQuestion || hasTension || firstParagraph.trim().length > 0) {
-    return {
-      preservationZone: {
-        start: 0,
-        end: firstParagraph.length,
-        text: firstParagraph,
-      },
-    };
-  }
-
-  return {
-    issue: {
-      issue: 'Opening is empty',
-      location: {
-        start: 0,
-        end: Math.min(firstParagraph.length, 200),
-        text: firstParagraph.substring(0, 200),
-      },
-      currentText: firstParagraph.substring(0, 100),
-      suggestedFix: 'Give the reader a concrete reason to care, then state the controlling point within 150 words.',
-      priority: 'high',
-    },
-    problemZone: {
-      start: 0,
-      end: Math.min(firstParagraph.length, 200),
-      text: firstParagraph.substring(0, 200),
-    },
-  };
-}
 
 function analyzeJargon(content: string): {
   suggestions: RevisionSuggestion[];
@@ -339,10 +275,9 @@ function analyzeEvolutionPattern(content: string): {
   issue?: RevisionSuggestion;
   problemZone?: TextRange;
 } {
-  // Guide v1.3: the explicit "I used to think X, now Y" formula is a
-  // templated tic. The current form retracts an earlier sentence mid-argument
-  // with the evidence that forced the retraction — absence of the formula is
-  // not a defect.
+  // The explicit "I used to think X, now Y" formula is a templated tic.
+  // Keep an evolution beat only when supplied evidence establishes that a
+  // changed conclusion is material; absence of one is never a defect.
   const evolutionFormulas = [
     /I used to think[^.]+now I/gi,
     /I used to believe[^.]+but/gi,
@@ -366,7 +301,7 @@ function analyzeEvolutionPattern(content: string): {
           },
           currentText: match[0],
           suggestedFix:
-            'Show the evolution inside the argument instead — retract an earlier sentence with the evidence that forced it ("My first draft of this section said X. Then I went and read the predicate. There\'s a third condition."), or let the changed thinking show through the argument itself.',
+            'Keep a change in thinking only when supplied evidence shows a material change to the claim. Otherwise, remove the evolution framing and state the supported claim directly.',
           priority: 'medium',
         },
         problemZone: {
@@ -376,31 +311,6 @@ function analyzeEvolutionPattern(content: string): {
         },
       };
     }
-  }
-
-  return {};
-}
-
-function analyzeSelfInterrogation(content: string): {
-  issue?: RevisionSuggestion;
-  preservationZone?: TextRange;
-} {
-  // Guide v1.7: genuine questions may mark a turn, but no question is required.
-  const firstParagraphEnd = content.indexOf('\n\n');
-  const bodyStart = firstParagraphEnd === -1 ? 0 : firstParagraphEnd;
-  const bodyQuestionIndex = content.indexOf('?', bodyStart);
-
-  if (bodyQuestionIndex !== -1) {
-    const sentenceStart = findSentenceStart(content, bodyQuestionIndex);
-    const sentenceEnd = findSentenceEnd(content, bodyQuestionIndex);
-
-    return {
-      preservationZone: {
-        start: sentenceStart,
-        end: sentenceEnd,
-        text: content.substring(sentenceStart, sentenceEnd),
-      },
-    };
   }
 
   return {};

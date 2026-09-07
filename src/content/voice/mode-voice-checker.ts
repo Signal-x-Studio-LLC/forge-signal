@@ -10,7 +10,8 @@ import { getVoice, listVoices } from '../../core/registries/voice-registry.js';
 
 export interface ModeVoiceCheckResult {
   mode: ContentMode;
-  score: number; // 0-10
+  /** 0-10 for detected rule violations; not proof of voice or factual quality. */
+  score: number;
   passed: boolean;
   issues: string[];
   strengths: string[];
@@ -24,6 +25,16 @@ export interface ModeVoiceCheckResult {
  * Check content voice for a specific mode
  */
 export function checkVoiceForMode(content: string, mode: ContentMode): ModeVoiceCheckResult {
+  if (!content.trim()) {
+    return {
+      mode,
+      score: 0,
+      passed: false,
+      issues: ['Content is empty'],
+      strengths: [],
+    };
+  }
+
   const voice = getVoice(mode);
   if (!voice) {
     return {
@@ -40,19 +51,20 @@ export function checkVoiceForMode(content: string, mode: ContentMode): ModeVoice
   const strengths: string[] = [];
   let score = 10;
 
-  // Check opening patterns
+  // Empty requirement lists mean the voice allows several earned forms. Other
+  // modes keep their existing requirements.
   const firstParagraph = content.split('\n\n')[0] || '';
-  const hasRequiredOpening = rules.openingPatterns.required.some((pattern) =>
+  const hasRequiredOpening = rules.openingPatterns.required.length > 0 && rules.openingPatterns.required.some((pattern) =>
     pattern.test(firstParagraph)
   );
   const hasForbiddenOpening = rules.openingPatterns.forbidden.some((pattern) =>
     pattern.test(firstParagraph)
   );
 
-  if (!hasRequiredOpening) {
+  if (rules.openingPatterns.required.length > 0 && !hasRequiredOpening) {
     issues.push(`Opening lacks expected patterns for ${voice.name}`);
     score -= 2;
-  } else {
+  } else if (rules.openingPatterns.required.length > 0) {
     strengths.push(`Strong opening for ${voice.name}`);
   }
 
@@ -63,10 +75,10 @@ export function checkVoiceForMode(content: string, mode: ContentMode): ModeVoice
 
   // Check positive voice markers
   const positiveMatches = rules.voiceMarkers.positive.filter((pattern) => pattern.test(content));
-  if (positiveMatches.length === 0) {
+  if (rules.voiceMarkers.positive.length > 0 && positiveMatches.length === 0) {
     issues.push(`Missing positive voice markers for ${voice.name}`);
     score -= 1.5;
-  } else if (positiveMatches.length >= 2) {
+  } else if (rules.voiceMarkers.positive.length > 0 && positiveMatches.length >= 2) {
     strengths.push(`Uses appropriate voice markers for ${voice.name}`);
   }
 
@@ -78,13 +90,13 @@ export function checkVoiceForMode(content: string, mode: ContentMode): ModeVoice
   }
 
   // Check structural patterns
-  const hasRequiredStructure = rules.structuralPatterns.required.some((pattern) =>
+  const hasRequiredStructure = rules.structuralPatterns.required.length > 0 && rules.structuralPatterns.required.some((pattern) =>
     pattern.test(content)
   );
-  if (!hasRequiredStructure) {
+  if (rules.structuralPatterns.required.length > 0 && !hasRequiredStructure) {
     issues.push(`Missing expected structural patterns for ${voice.name}`);
     score -= 0.5;
-  } else {
+  } else if (rules.structuralPatterns.required.length > 0) {
     strengths.push(`Has expected structural patterns for ${voice.name}`);
   }
 
