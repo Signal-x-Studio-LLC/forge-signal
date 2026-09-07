@@ -371,7 +371,7 @@ export function getRevisionSummary(result: EnhancedVoiceCheckResult): string {
   const lines: string[] = [];
 
   if (result.passed) {
-    lines.push(`Voice check passed (score: ${result.score}/10)`);
+    lines.push(`Voice-rule threshold met (score: ${result.score}/10; not proof of voice or factual quality)`);
   } else {
     lines.push(`Voice check failed (score: ${result.score}/10)`);
   }
