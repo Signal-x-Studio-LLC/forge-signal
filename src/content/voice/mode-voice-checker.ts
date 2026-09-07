@@ -10,7 +10,7 @@ import { getVoice, listVoices } from '../../core/registries/voice-registry.js';
 
 export interface ModeVoiceCheckResult {
   mode: ContentMode;
-  /** 0-10 for detected rule violations; not proof of voice or factual quality. */
+  /** Heuristic 0-10 for detected rule violations; not proof of voice or factual quality. */
   score: number;
   passed: boolean;
   issues: string[];

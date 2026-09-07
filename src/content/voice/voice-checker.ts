@@ -1,7 +1,8 @@
 import { VOICE_RULES, RETIRED_PROVISIONAL_TELLS } from './voice-guide.js';
 
 export interface VoiceCheckResult {
-  score: number; // 0-10
+  /** Heuristic 0-10 for detected rule violations; not proof of voice or factual quality. */
+  score: number;
   passed: boolean;
   issues: string[];
   strengths: string[];
@@ -57,13 +58,11 @@ export function checkVoice(content: string): VoiceCheckResult {
     }
   }
 
-  // Check for templated evolution formula (guide v1.3: explicit "I used to
-  // think X, now Y" framing is a tic when templated — evolution should show
-  // inside the argument, e.g. a mid-post retraction with evidence)
+  // A narrated change belongs only where supplied evidence establishes one.
   const hasEvolutionFormula = /I used to (think|believe)[^.]+\b(now|but)\b|That sounds like progress/i.test(content);
   if (hasEvolutionFormula) {
     issues.push(
-      'Uses the explicit evolution formula ("I used to think X, now Y") — show changed thinking inside the argument instead'
+      'Uses the explicit evolution formula ("I used to think X, now Y") — preserve it only when a source-grounded change materially alters the claim; otherwise state the claim without narrating a change'
     );
     score -= 0.5;
   }

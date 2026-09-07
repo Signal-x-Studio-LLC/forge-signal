@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { registerBuiltInPresets } from '../src/presets/index.js';
 import { checkVoiceForMode } from '../src/content/voice/mode-voice-checker.js';
 import { checkVoice } from '../src/content/voice/voice-checker.js';
-import { checkVoiceEnhanced } from '../src/content/voice/voice-checker-v2.js';
+import { checkVoiceEnhanced, getRevisionSummary } from '../src/content/voice/voice-checker-v2.js';
 
 // This is a synthetic, citation-free stand-in for the short historical source
 // shape reviewed during reconciliation. It deliberately does not copy private
@@ -72,6 +72,22 @@ const evolutionResult = checkVoiceEnhanced(
 const evolutionSuggestion = evolutionResult.suggestions.find((suggestion) => /evolution formula/i.test(suggestion.issue));
 assert.match(evolutionSuggestion?.suggestedFix ?? '', /supplied evidence/i);
 assert.doesNotMatch(evolutionSuggestion?.suggestedFix ?? '', /My first draft|went and read/i);
+
+const legacyEvolutionResult = checkVoice(
+  'I used to think the issue was local, now I know the source showed a broader constraint.'
+);
+assert.match(legacyEvolutionResult.issues.join('\n'), /source-grounded change/i);
+assert.doesNotMatch(legacyEvolutionResult.issues.join('\n'), /show changed thinking inside/i);
+
+const qualifiedSummaryResult = checkVoiceEnhanced(
+  "The claim is supported. Here's where I've landed—for now."
+);
+assert.equal(qualifiedSummaryResult.passed, true, 'a narrow heuristic issue can remain above the threshold');
+assert.equal(qualifiedSummaryResult.issues.length > 0, true);
+assert.match(
+  getRevisionSummary(qualifiedSummaryResult),
+  /Voice-rule threshold met \(score: \d+(?:\.\d+)?\/10; not proof of voice or factual quality\)/
+);
 
 const retiredTellResult = checkVoiceForMode(
   "The claim is supported. Here's where I've landed—for now.",
